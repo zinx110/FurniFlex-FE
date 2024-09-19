@@ -1,0 +1,102 @@
+[
+    {
+      "id": 1,
+      "imgUrl": "/assets/products/image 146.svg",
+      "category": "",
+      "name": "Recliner Chair Wood",
+      "discountedPrice": 245,
+      "discount": 50,
+      "description": "It has a backrest that can be tilted back, and often a footrest extended",
+      "Quantity": 2
+    },
+    {
+      "id": 2,
+      "imgUrl": "/assets/products/image 147.svg",
+      "category": "",
+      "name": "Timber Ride Padded",
+      "discountedPrice": 75,
+      "discount": 30,
+      "description": "High Back Rocking Side Pocket Portable Folding Outdoor Camping Chairs.",
+      "Quantity": 2
+    },
+    {
+      "id": 3,
+      "imgUrl": "/assets/products/image 148.svg",
+      "category": "",
+      "name": "Colored Wooden Chair",
+      "discountedPrice": 350,
+      "discount": 30,
+      "description": "It has a backrest that can be tilted back, and often a footrest extended",
+      "Quantity": 2
+    },
+    {
+      "id": 4,
+      "imgUrl": "/assets/products/image 149.svg",
+      "category": "",
+      "name": "Blank Bamboo Wicker",
+      "discountedPrice": 400,
+      "discount": 30,
+      "description": "It has a backrest that can be tilted back, and often a footrest extended",
+      "Quantity": 2
+    },
+    {
+      "id": 5,
+      "imgUrl": "/assets/products/image 150.svg",
+      "category": "",
+      "name": "Isolated Wooden Rock",
+      "discountedPrice": 350,
+      "discount": 30,
+      "description": "Lightweight, easy to clean, sturdy, safe and stable. Non-slip legs",
+      "Quantity": 2
+    },
+    {
+      "id": 6,
+      "imgUrl": "/assets/products/image 151.svg",
+      "category": "",
+      "name": "Minimal Empty Rocking",
+      "discountedPrice": 350,
+      "discount": 30,
+      "description": "It has a backrest that can be tilted back, and often a footrest extended",
+      "Quantity": 2
+    },
+    {
+      "id": 7,
+      "imgUrl": "/assets/products/image 146.svg",
+      "category": "",
+      "name": "Recliner Chair Wood",
+      "discountedPrice": 350,
+      "discount": 30,
+      "description": "A seat, especially for one person, usually having four legs for support.",
+      "Quantity": 2
+    },
+    {
+        "id": 8,
+        "imgUrl": "/assets/products/image 151.svg",
+        "category": "",
+        "name": "Minimal Empty Rocking",
+        "discountedPrice": 350,
+        "discount": 30,
+        "description": "It has a backrest that can be tilted back, and often a footrest extended",
+        "Quantity": 2
+      },
+      {
+        "id": 9,
+        "imgUrl": "/assets/products/image 146.svg",
+        "category": "",
+        "name": "Recliner Chair Wood",
+        "discountedPrice": 350,
+        "discount": 30,
+        "description": "A seat, especially for one person, usually having four legs for support.",
+        "Quantity": 2
+      },
+      {
+          "id": 10,
+          "imgUrl": "/assets/products/image 151.svg",
+          "category": "",
+          "name": "Minimal Empty Rocking",
+          "discountedPrice": 350,
+          "discount": 30,
+          "description": "It has a backrest that can be tilted back, and often a footrest extended",
+          "Quantity": 2
+        }
+  ]
