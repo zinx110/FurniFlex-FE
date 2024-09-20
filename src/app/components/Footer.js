@@ -34,7 +34,7 @@ const Footer = () => {
               <span className="text-black">f</span>
             </div>
             <div className="flex items-center text-[20px] font-bold ">
-              <span>
+              <span className='text-black'>
                 Furni<span className="text-[#1E99F5]">Flex</span>
               </span>
             </div>
