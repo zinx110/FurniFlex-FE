@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true} className={` ${geistBarlow.variable} font-sans`}> {children}</body>
+      <body suppressHydrationWarning={true} className={` ${geistBarlow.variable} font-sans text-white`}> {children}</body>
     </html>
   );
 }
