@@ -1,14 +1,12 @@
 import React from "react";
-import ProfileForm from "./components/ProfileForm";
-import Sidebar from "./components/Sidebar";
+import Profile from "./profile/page";
 
-const Profile = () => {
+const UserInfo = () => {
   return (
-    <div className='flex flex-row'>
-      <Sidebar />
-      <ProfileForm />
+    <div >
+      <Profile />
     </div>
   );
 };
 
-export default Profile;
+export default UserInfo;
