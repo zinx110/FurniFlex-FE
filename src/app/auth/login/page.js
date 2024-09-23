@@ -10,7 +10,7 @@ const Login = () => {
     const route = useRouter();
     useEffect(() => {
         if (userToken) {
-            route.push("/store");
+            route.push("../../store");
         }
     }, [userToken]);
     const handleClick = () => {
@@ -105,7 +105,7 @@ const Login = () => {
                         </div>
                         <div className="flex items-center justify-center mt-5">
                             <span>
-                                Haven't an account?{" "}
+                                Haven&apos;t an account?{" "}
                                 <a href="/" className="text-[#0F3DDE]">
                                     Signup
                                 </a>

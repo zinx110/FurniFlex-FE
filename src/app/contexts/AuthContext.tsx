@@ -42,25 +42,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUserId("");
         setUserRole("");
     };
-
     useEffect(() => {
         const _userToken = localStorage.getItem("furniflex-userToken");
         const _userName = localStorage.getItem("furniflex-userName");
         const _userId = localStorage.getItem("furniflex-userId");
         const _userRole = localStorage.getItem("furniflex-userRole");
-        if (!userToken) {
+
+        // Only set user details if the token is present
+        if (!_userToken) {
             setUserToken("");
             setUserName("");
             setUserId("");
             setUserRole("");
-
             setInitializing(false);
             return;
         }
+
+        // Set the user state with values from localStorage
         setUserToken(_userToken);
-        setUserName(_userName);
-        setUserId(_userId);
-        setUserRole(_userRole);
+        setUserName(_userName || "");
+        setUserId(_userId || "");
+        setUserRole(_userRole || "");
         setInitializing(false);
     }, []);
 

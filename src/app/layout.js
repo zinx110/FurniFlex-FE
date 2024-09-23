@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import LayoutProviderWrapper from "./components/LayoutProviderWrapper";
+
 import { AuthProvider } from "./contexts/AuthContext";
 import "./globals.css";
 
