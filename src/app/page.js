@@ -1,9 +1,11 @@
-import Login from "./auth/login/page";
+
+import Profile from "./user/page";
 
 export default function Home() {
   return (
     <div className="">
-      <Login />
+      {/* <Login /> */}
+      <Profile />
     </div>
   );
 }
