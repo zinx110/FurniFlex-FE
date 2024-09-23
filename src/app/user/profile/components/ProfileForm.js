@@ -56,7 +56,9 @@ const ProfileForm = () => {
         <hr class="border-gray-500 border-t-[0.1px]" />
       </div>
       <div className="changes-btn mt-5 w-full flex justify-center p-3 text-[18px]">
-        <button className="bg-[#2489FF] px-5 py-2 rounded-lg">Save Changes</button>
+        <button className="bg-[#2489FF] px-5 py-2 rounded-lg">
+          Save Changes
+        </button>
       </div>
     </div>
   );
