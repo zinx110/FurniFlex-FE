@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const Sidebar = () => {
   const Options = [
@@ -24,6 +26,13 @@ const Sidebar = () => {
     },
   ];
 
+  const router = useRouter(); // Initialize the router
+  const { logout } = useAuth(); // Use the context to access logout function
+
+  const handleLogout = () => {
+    logout(); // Call the logout function
+    router.push("/auth/signup"); // Redirect after logout
+  };
   return (
     <div className="bg-[#e9eae9] w-1/4 rounded-lg p-10 h-[50%] text-black">
       <div className="text-[18px] font-semibold">Options</div>
@@ -54,6 +63,25 @@ const Sidebar = () => {
             </div>
           </a>
         ))}
+        <button onClick={handleLogout} className="flex font-semibold mb-4">
+          <Image
+            src="/assets/icons/logout.svg"
+            alt="logout"
+            width={1000}
+            height={1000}
+            className="w-[24px] h-[24px] mr-2"
+          />
+          <div className="flex justify-between w-full">
+            <span>Logout</span>
+            <Image
+              src="/assets/icons/rightnav.svg" // Keep this as a static image
+              alt="alt"
+              width={1000}
+              height={1000}
+              className="w-[24px] h-[24px]"
+            />
+          </div>
+        </button>
       </div>
     </div>
   );
