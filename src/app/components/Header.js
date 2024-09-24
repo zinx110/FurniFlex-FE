@@ -20,13 +20,8 @@ const Barlist = [
         link: "/",
     },
     {
-        id: 4,
-        name: "Custom",
-        link: "/",
-    },
-    {
         id: 5,
-        name: "Blog",
+        name: "About",
         link: "/",
     },
 ];
