@@ -67,7 +67,18 @@ const ProfileForm = () => {
       newErrors.Email = "Email is required.";
       valid = false;
     }
-
+      // Validate email
+    if (!userData.Email) {
+      newErrors.Email = "Email is required.";
+      valid = false;
+    } else {
+      // Email format validation with regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(userData.Email)) {
+        newErrors.Email = "Invalid email format.";
+        valid = false;
+      }
+    }
     setErrors(newErrors);
     return valid;
   };
