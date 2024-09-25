@@ -4,19 +4,20 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { fetchReportById } from "@/lib/firestore";
-import { uploadUriType } from "@/types";
 import axios from "axios";
 import Image from "next/image";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useAuth } from "../../../contexts/AuthContext";
+import AddAndManageCart from "./components/AddAndManageCart";
 
 const ProductDetailsPage = () => {
     const { id } = useParams();
+
     const [product, setProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+
     const [error, setError] = useState<string | null>(null);
-    const { userToken } = useAuth();
+    const { user, setUser } = useAuth();
     useEffect(() => {
         const fetchProduct = async () => {
             setLoading(true);
@@ -24,7 +25,7 @@ const ProductDetailsPage = () => {
                 const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/${id}`;
                 const config = {};
                 const res = await axios.get(url, {
-                    headers: { Authorization: "Bearer " + userToken },
+                    headers: { Authorization: "Bearer " + "userToken" },
                 });
                 if (res.status == 200) {
                     const data = res.data;
@@ -103,10 +104,7 @@ const ProductDetailsPage = () => {
                                     Quantity Available: {product.Quantity}
                                 </span>
                             </div>
-
-                            <button className="mt-8 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                                Add to Cart
-                            </button>
+                            <AddAndManageCart product={product} />
                         </div>
                     </div>
 

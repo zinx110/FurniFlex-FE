@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 const Barlist = [
     {
@@ -28,6 +29,7 @@ const Barlist = [
 
 const Header = () => {
     const router = useRouter();
+    const { user } = useAuth();
 
     const handleCartClick = () => {
         router.push("../store/cart");
@@ -60,7 +62,7 @@ const Header = () => {
                 <button onClick={handleCartClick} className="shops relative ">
                     <div className=" absolute flex w-[16px] h-[16px] bg-[#323232] items-center justify-center rounded-full translate-x-4 translate-y-[1.1rem] mx-auto">
                         <span className="text-[11.2px] font-medium text-white">
-                            2
+                            {user ? user.CartItems.length : 0}
                         </span>
                     </div>
                     <Image
