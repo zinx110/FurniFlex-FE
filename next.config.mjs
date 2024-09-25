@@ -2,14 +2,14 @@
 const nextConfig = {
     images: {
         remotePatterns: [
-          {
-            protocol: 'https',
-            hostname: 'localhost',
-            port: '44344', // Add the correct port here
-           
-          },
+            {
+                protocol: "https", // Or 'http' if that's your case
+                hostname: "localhost",
+                port: "44344", // Port number where your API is running
+                pathname: "*", // Adjust the pathname to match your API route
+            },
         ],
-      },
+    },
 };
 
 export default nextConfig;

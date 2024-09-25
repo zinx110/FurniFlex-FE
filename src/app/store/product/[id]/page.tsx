@@ -21,7 +21,7 @@ const ProductDetailsPage = () => {
         const fetchProduct = async () => {
             setLoading(true);
             try {
-                const url = process.env.NEXT_PUBLIC_API_BASE_URL + "Products/1";
+                const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/${id}`;
                 const config = {};
                 const res = await axios.get(url, {
                     headers: { Authorization: "Bearer " + userToken },
@@ -61,8 +61,8 @@ const ProductDetailsPage = () => {
                     <div className="flex flex-col md:flex-row gap-8">
                         {/* Product Image */}
                         <div className="w-full md:w-1/2">
-                            <Image
-                                src={`/assets/products/image 151.svg`}
+                            <img
+                                src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/${product.ProductId}/image`}
                                 alt={product.Name}
                                 width={500}
                                 height={500}
