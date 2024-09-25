@@ -30,6 +30,7 @@ const Barlist = [
 const Header = () => {
     const router = useRouter();
     const { user } = useAuth();
+    const UserId = user.UserId;
 
     const handleCartClick = () => {
         router.push("../store/cart");
@@ -73,15 +74,16 @@ const Header = () => {
                         height={1440}
                     />
                 </button>
-                <button className="profile rounded-full object-cover">
-                    <Image
-                        src="/assets/icons/Account.svg"
+                <button className="profile rounded-full object-cover overflow-hidden">
+                    <img
+                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${UserId}/Image`}
                         alt="alt"
-                        className="w-[40px] min-w-[40px] min-h-[40px] h-[40px]"
+                        className="w-[40px] min-w-[40px] min-h-[40px] h-[40px] "
                         width={1440}
                         height={1440}
-                    />
+                        />
                 </button>
+                <span className="text-lg -m-2">Hi,<span className="font-bold text-gray-700">{user.FirstName}</span></span>
             </div>
         </div>
     );

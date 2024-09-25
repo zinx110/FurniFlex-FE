@@ -9,29 +9,29 @@ const Sidebar = () => {
     {
       id: 1,
       name: "My Profile",
-      path: "/user/profile", // Adjusted path
-      imgUrl: "/assets/icons/user.svg", // Adjusted imgUrl
+      path: "/user/profile", 
+      imgUrl: "/assets/icons/user.svg", 
     },
     {
       id: 2,
       name: "Settings",
-      path: "/settings", // Adjusted path
-      imgUrl: "/assets/icons/setting.svg", // Adjusted imgUrl
+      path: "/settings", 
+      imgUrl: "/assets/icons/setting.svg", 
     },
     {
       id: 3,
       name: "Notifications",
-      path: "/notifications", // Adjusted path
-      imgUrl: "/assets/icons/bell.svg", // Adjusted imgUrl
+      path: "/notifications", 
+      imgUrl: "/assets/icons/bell.svg",
     },
   ];
 
-  const router = useRouter(); // Initialize the router
-  const { logout } = useAuth(); // Use the context to access logout function
+  const router = useRouter(); 
+  const { logout } = useAuth(); 
 
   const handleLogout = () => {
-    logout(); // Call the logout function
-    router.push("/auth/signup"); // Redirect after logout
+    logout(); 
+    router.push("/auth/signup"); 
   };
   return (
     <div className="bg-[#e9eae9] w-1/4 rounded-lg p-10 h-[50%] text-black">

@@ -2,17 +2,20 @@
 import { React, useState, useEffect } from "react";
 import axios from "axios"; // Ensure axios is imported
 import Image from "next/image";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const ProfileForm = () => {
+  const user = useAuth();
+  const userid =user.user.UserId
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageFile, setImageFile] = useState(null); // To store file data for POST request
   const [userData, setUserData] = useState({
+    UserId: userid, 
     FirstName: "",
     LastName: "",
     Email: "",
     phone: "",
     location: "",
-    ProfilePicture: "", // URL for the profile image
   });
   const [errors, setErrors] = useState({
     FirstName: "",
@@ -20,29 +23,39 @@ const ProfileForm = () => {
     Email: "",
   });
 
-  // Simulate fetching user info by ID
+  // Fetch user info by ID
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get("https://localhost:44344/api/users/1");
+        // Fetch user data using the API endpoint
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userData.UserId}`);
         const data = response.data;
+
         setUserData({
+          UserId: data.UserId,
           FirstName: data.FirstName,
           LastName: data.LastName,
           Email: data.Email,
           phone: data.phone,
           location: data.location,
-          ProfilePicture: data.ProfilePictureUrl, // Already has full URL
         });
-        console.log(data.ProfilePictureUrl);
-        setSelectedImage(data.ProfilePictureUrl); // Set image from API data
+
+        // Fetch user image separately
+        const imageResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userData.UserId}/Image`, {
+          responseType: 'blob', // Ensure we get the image as a blob
+        });
+
+        // Create a URL for the image blob
+        const imageUrl = URL.createObjectURL(imageResponse.data);
+        setSelectedImage(imageUrl); // Set the selected image from the blob
+
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [userData.UserId]);
 
   // Handle image upload and preview
   const handleImgUpload = (event) => {
@@ -72,22 +85,16 @@ const ProfileForm = () => {
       valid = false;
     }
     // Validate email
-    if (!userData.Email) {
-      newErrors.Email = "Email is required.";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (userData.Email && !emailRegex.test(userData.Email)) {
+      newErrors.Email = "Invalid email format.";
       valid = false;
-    } else {
-      // Email format validation with regex
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(userData.Email)) {
-        newErrors.Email = "Invalid email format.";
-        valid = false;
-      }
     }
+
     setErrors(newErrors);
     return valid;
   };
 
-  // Handle saving changes (including the uploaded image)
   const handleSaveChanges = async () => {
     // Validate fields before saving
     if (!validateFields()) {
@@ -95,7 +102,6 @@ const ProfileForm = () => {
     }
 
     try {
-      // Create a FormData object to include the image file for upload
       const formData = new FormData();
       formData.append("FirstName", userData.FirstName);
       formData.append("LastName", userData.LastName);
@@ -106,13 +112,11 @@ const ProfileForm = () => {
       // Append image file only if it's been changed
       if (imageFile) {
         formData.append("ProfilePicture", imageFile);
-      } else {
-        formData.append("ProfilePicture", userData.ProfilePicture); // Retain the existing image URL
       }
 
       // PUT request using axios
       const response = await axios.put(
-        "https://localhost:44344/api/users/1",
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userData.UserId}`,
         formData,
         {
           headers: {
@@ -122,7 +126,7 @@ const ProfileForm = () => {
       );
 
       if (response.status === 204) {
-        console.log("Changes saved successfully!");
+        alert("Changes saved successfully!");
       } else {
         console.error("Failed to save changes");
       }
@@ -160,7 +164,7 @@ const ProfileForm = () => {
               type="file"
               accept="image/*"
               onChange={handleImgUpload}
-              className="hidden" // Hide the default file input
+              className="hidden" 
             />
           </label>
           <div className="flex flex-col">
@@ -239,7 +243,7 @@ const ProfileForm = () => {
           <span>Location</span>
           <input
             type="text"
-            className="bg-slate-400/20 text-gray-500 p-2 focus:outline-none w-1/2"
+            className="bg-slate-400/20 text-gray-500 p-2 focus:outline-none w-auto"
             value={userData.location}
             onChange={(e) =>
               setUserData({ ...userData, location: e.target.value })
@@ -247,11 +251,10 @@ const ProfileForm = () => {
           />
         </div>
         <hr className="border-gray-500 border-t-[0.1px]" />
-      </div>
-      <div className="flex justify-center mt-5">
+        {/* Save Changes Button */}
         <button
           onClick={handleSaveChanges}
-          className="bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white py-2 rounded mt-4"
         >
           Save Changes
         </button>

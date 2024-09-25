@@ -62,8 +62,8 @@ export const PostProducts = () => {
       valid = false;
     }
 
-    // Image URL validation (optional)
-    if (productData.ImgUrl && !/\.(jpg|jpeg|png)$/i.test(productData.ImgUrl.name)) {
+    // Image URL validation 
+    if (productData.ImgUrl && !/\.(jpg|jpeg|png|svg)$/i.test(productData.ImgUrl.name)) {
       newErrors.ImgUrl = "Image must be in JPG or PNG format.";
       valid = false;
     }
@@ -236,7 +236,7 @@ export const PostProducts = () => {
         {/* Discounted Price */}
         <div className="mb-4">
           <label htmlFor="DiscountedPrice" className="block text-sm font-medium text-gray-700">
-            Discounted Price
+             Price
           </label>
           <input
             type="number"
