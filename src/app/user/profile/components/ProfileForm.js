@@ -14,7 +14,11 @@ const ProfileForm = () => {
     location: "",
     ProfilePicture: "", // URL for the profile image
   });
-  const [errors, setErrors] = useState({ FirstName: "", LastName: "", Email: "" });
+  const [errors, setErrors] = useState({
+    FirstName: "",
+    LastName: "",
+    Email: "",
+  });
 
   // Simulate fetching user info by ID
   useEffect(() => {
@@ -30,7 +34,7 @@ const ProfileForm = () => {
           location: data.location,
           ProfilePicture: data.ProfilePictureUrl, // Already has full URL
         });
-        console.log(data.ProfilePictureUrl)
+        console.log(data.ProfilePictureUrl);
         setSelectedImage(data.ProfilePictureUrl); // Set image from API data
       } catch (error) {
         console.error("Failed to fetch user data:", error);
@@ -67,7 +71,7 @@ const ProfileForm = () => {
       newErrors.Email = "Email is required.";
       valid = false;
     }
-      // Validate email
+    // Validate email
     if (!userData.Email) {
       newErrors.Email = "Email is required.";
       valid = false;
@@ -107,11 +111,15 @@ const ProfileForm = () => {
       }
 
       // PUT request using axios
-      const response = await axios.put("https://localhost:44344/api/users/1", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.put(
+        "https://localhost:44344/api/users/1",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.status === 204) {
         console.log("Changes saved successfully!");
@@ -170,7 +178,7 @@ const ProfileForm = () => {
           <span>First Name</span>
           <input
             type="text"
-            className="bg-transparent text-gray-500 p-2 focus:outline-none"
+            className="bg-slate-400/20 text-gray-500 p-2 focus:outline-none"
             value={userData.FirstName}
             onChange={(e) =>
               setUserData({ ...userData, FirstName: e.target.value })
@@ -186,7 +194,7 @@ const ProfileForm = () => {
           <span>Last Name</span>
           <input
             type="text"
-            className="bg-transparent text-gray-500 p-2 focus:outline-none"
+            className="bg-slate-400/20 text-gray-500 p-2 focus:outline-none"
             value={userData.LastName}
             onChange={(e) =>
               setUserData({ ...userData, LastName: e.target.value })
@@ -202,21 +210,23 @@ const ProfileForm = () => {
           <span>Email</span>
           <input
             type="text"
-            className="bg-transparent text-gray-500 p-2 focus:outline-none"
+            className="bg-slate-400/20 text-gray-500 p-2 focus:outline-none"
             value={userData.Email}
             onChange={(e) =>
               setUserData({ ...userData, Email: e.target.value })
             }
           />
         </div>
-        {errors.Email && <span className="text-red-500 ml-2">{errors.Email}</span>}
+        {errors.Email && (
+          <span className="text-red-500 ml-2">{errors.Email}</span>
+        )}
         <hr className="border-gray-500 border-t-[0.1px]" />
         {/* Phone Number Field */}
         <div className="w-full bg-white/10 flex justify-between h-10 items-center rounded-lg p-2">
           <span>Mobile number</span>
           <input
             type="text"
-            className="bg-transparent text-gray-500 p-2 focus:outline-none w-auto"
+            className="bg-slate-400/20 text-gray-500 p-2 focus:outline-none w-auto"
             value={userData.phone}
             onChange={(e) =>
               setUserData({ ...userData, phone: e.target.value })
@@ -229,7 +239,7 @@ const ProfileForm = () => {
           <span>Location</span>
           <input
             type="text"
-            className="bg-transparent text-gray-500 p-2 focus:outline-none w-1/2"
+            className="bg-slate-400/20 text-gray-500 p-2 focus:outline-none w-1/2"
             value={userData.location}
             onChange={(e) =>
               setUserData({ ...userData, location: e.target.value })
