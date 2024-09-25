@@ -1,40 +1,30 @@
 "use client";
 import React, { useState } from "react";
-const list = [
-  {
-    id: 1,
-    name: "Rocking chair",
-    Path: "#Footer",
-  },
-  {
-    id: 2,
-    name: "Side chair",
-    Path: "#Header",
-  },
-  {
-    id: 3,
-    name: "Lounge chair",
-    Path: "#Cart",
-  },
-];
 
-const Sidebar = () => {
-  const [selectedId, setSelectedId] = useState(1);
+// Categories should be passed as props
+const Sidebar = ({ categories, onSelectCategory }) => {
+  const [selectedId, setSelectedId] = useState(null);
+
+  // Add "All" category at the beginning of the categories list
+  const allCategories = [{ CategoryId: null, Name: "All" }, ...categories];
+
   return (
-    <div className="flex flex-col gap-[12px] pt-[40px] w-[263px] h-[1000px] border-r">
-      {list.map((item) => (
-        <a
-          key={item.id}
-          onClick={() => setSelectedId(item.id)}
-          href={item.Path}
-          className={`flex items-center px-[24px] rounded-lg text-[22px] h-[53px] w-[231px] font-medium ${
-            selectedId === item.id
+    <div className="flex flex-col gap-[18px] pt-[40px] w-[263px] h-[1000px] border-r">
+      {allCategories.map((item) => (
+        <button
+          key={item.CategoryId} // Handle both "All" and actual categories
+          onClick={() => {
+            setSelectedId(item.CategoryId); // Update selectedId
+            onSelectCategory(item.CategoryId); // Call the function to filter products
+          }}
+          className={`flex items-center justify-center px-[24px] py-[5px] rounded-lg text-[20px] h-[53px] hover:bg-black/10 w-[231px] font-medium ${
+            selectedId === item.CategoryId
               ? "bg-black text-white font-semibold"
-              : "text-[#717171]  "
+              : "text-[#717171]"
           }`}
         >
-          {item.name}
-        </a>
+          {item.Name} {/* Render category name */}
+        </button>
       ))}
     </div>
   );
