@@ -36,8 +36,8 @@ const ProfileForm = () => {
           FirstName: data.FirstName,
           LastName: data.LastName,
           Email: data.Email,
-          phone: data.phone,
-          location: data.location,
+          phone: data.Phone,
+          location: data.Location,
         });
 
         // Fetch user image separately
