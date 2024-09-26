@@ -1,6 +1,6 @@
 import React from "react";
-import ProfileForm from "./components/ProfileForm";
 import Sidebar from "./components/Sidebar";
+import ProfileForm from "./components/ProfileForm";
 
 const Profile = () => {
     return (

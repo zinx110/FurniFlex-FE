@@ -26,7 +26,9 @@ const ForgotPassword = () => {
         try {
             const response = await axios.patch(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/Auth/ForgotPassword`,
-                email // Sending email as a plain string
+                {
+                    Email: email
+                }
             );
 
             if (response.status === 200) {
@@ -54,7 +56,7 @@ const ForgotPassword = () => {
         }
 
         try {
-            const response = await axios.post(
+            const response = await axios.patch(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/Auth/VerifyOtpAndResetPassword`,
                 {
                     Email: email,
