@@ -129,6 +129,7 @@ const ProfileForm = () => {
                 formData,
                 {
                     headers: {
+                        Authorization: "Bearer " + user.AuthToken,
                         "Content-Type": "multipart/form-data",
                     },
                 }

@@ -38,7 +38,10 @@ const AddAndManageCart = ({ product }: AddAndManageCartProp) => {
                 url,
                 {},
                 {
-                    headers: { Authorization: "Bearer " + user?.AuthToken },
+                    headers: {
+                        Authorization: "Bearer " + user.AuthToken,
+                        "Content-Type": "application/json",
+                    },
                 }
             );
             if (res.status == 200) {
@@ -80,12 +83,15 @@ const AddAndManageCart = ({ product }: AddAndManageCartProp) => {
             const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Carts`;
             const config = {};
             const reqBody = {
-                UserId: 3,
+                UserId: user.UserId,
                 ProductId: product.ProductId,
                 Quantity: 1,
             };
             const res = await axios.post(url, reqBody, {
-                headers: { Authorization: "Bearer " + user?.AuthToken },
+                headers: {
+                    Authorization: "Bearer " + user.AuthToken,
+                    "Content-Type": "application/json",
+                },
             });
             if (res.status == 201) {
                 alert("Added successfully");
@@ -120,7 +126,10 @@ const AddAndManageCart = ({ product }: AddAndManageCartProp) => {
             const config = {};
 
             const res = await axios.delete(url, {
-                headers: { Authorization: "Bearer " + user?.AuthToken },
+                headers: {
+                    Authorization: "Bearer " + user.AuthToken,
+                    "Content-Type": "application/json",
+                },
             });
 
             if (res.status == 200) {

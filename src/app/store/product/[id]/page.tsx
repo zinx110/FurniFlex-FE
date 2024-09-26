@@ -25,7 +25,10 @@ const ProductDetailsPage = () => {
                 const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/${id}`;
                 const config = {};
                 const res = await axios.get(url, {
-                    headers: { Authorization: "Bearer " + "userToken" },
+                    headers: {
+                        Authorization: "Bearer " + user?.AuthToken,
+                        "Content-Type": "application/json",
+                    },
                 });
                 if (res.status == 200) {
                     const data = res.data;

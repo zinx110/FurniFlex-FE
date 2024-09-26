@@ -30,9 +30,13 @@ const ProfileForm = () => {
             if (!userId) return;
             try {
                 // Fetch user data using the API endpoint
-                const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userId}`
-                );
+                const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Auth/GetMyData`;
+                const response = await axios.get(url, {
+                    headers: {
+                        Authorization: "Bearer " + user.AuthToken,
+                        "Content-Type": "application/json",
+                    },
+                });
                 const data = response.data;
                 console.log("user fresh data :", data);
 
@@ -50,6 +54,10 @@ const ProfileForm = () => {
                     `${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userId}/Image`,
                     {
                         responseType: "blob", // Ensure we get the image as a blob
+                        headers: {
+                            Authorization: "Bearer " + user.AuthToken,
+                            "Content-Type": "application/json",
+                        },
                     }
                 );
 

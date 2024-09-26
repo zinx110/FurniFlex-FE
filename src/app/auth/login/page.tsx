@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { User } from "../../../types/User";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Login = () => {
@@ -51,6 +52,8 @@ const Login = () => {
                 const data = response.data;
                 console.log(data);
                 const AuthToken = data.AuthToken;
+
+                if (!data) return;
                 const userData = {
                     UserId: data.UserId,
                     Email: data.Email,
@@ -58,6 +61,7 @@ const Login = () => {
                     LastName: data.LastName,
                     Location: data.Location || "",
                     Phone: data.Phone || "",
+                    // @ts-ignore
                     ProfilePictureUrl: data.ProfilePicture || "",
                     CartItems: data.CartItems || [],
                     Orders: data.Orders || [],

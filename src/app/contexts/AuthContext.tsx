@@ -31,9 +31,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     async function getUserData(token) {
         try {
-            const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/3`;
+            const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Auth/GetMyData`;
             const res = await axios.get(url, {
-                headers: { Authorization: "Bearer " + token },
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
             });
             if (res.status !== 200) {
                 setInitializing(false);
@@ -76,7 +79,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         let _userToken = localStorage.getItem("furniflex-userToken");
 
         // Only set user details if the token is present
-        _userToken = "1sdfadfdfaf";
+
         if (!_userToken) {
             setUser(null);
             setInitializing(false);

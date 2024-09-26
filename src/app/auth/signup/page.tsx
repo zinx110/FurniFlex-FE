@@ -65,10 +65,10 @@ const Signup = () => {
 
             if (response.status === 201) {
                 // Handle success (e.g., redirect to login or home page)
-                const data = response.data as User;
-                if (!data) return;
-                console.log(data);
+                const data = response.data;
                 const AuthToken = data.AuthToken;
+
+                if (!data) return;
                 const userData: User = {
                     UserId: data.UserId,
                     Email: data.Email,

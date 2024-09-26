@@ -24,7 +24,10 @@ const CartItem = ({ cart }: CartItemProps) => {
                 url,
                 {},
                 {
-                    headers: { Authorization: "Bearer " + user?.AuthToken },
+                    headers: {
+                        Authorization: "Bearer " + user.AuthToken,
+                        "Content-Type": "application/json",
+                    },
                 }
             );
             if (res.status == 200) {
@@ -74,7 +77,10 @@ const CartItem = ({ cart }: CartItemProps) => {
             const config = {};
 
             const res = await axios.delete(url, {
-                headers: { Authorization: "Bearer " + user?.AuthToken },
+                headers: {
+                    Authorization: "Bearer " + user.AuthToken,
+                    "Content-Type": "application/json",
+                },
             });
 
             if (res.status == 200) {
