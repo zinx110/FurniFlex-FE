@@ -40,14 +40,14 @@ const ProfileForm = () => {
           location: data.Location,
         });
 
-        // Fetch user image separately
+        
         const imageResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userData.UserId}/Image`, {
-          responseType: 'blob', // Ensure we get the image as a blob
+          responseType: 'blob',
         });
 
-        // Create a URL for the image blob
+       
         const imageUrl = URL.createObjectURL(imageResponse.data);
-        setSelectedImage(imageUrl); // Set the selected image from the blob
+        setSelectedImage(imageUrl);
 
       } catch (error) {
         console.error("Failed to fetch user data:", error);
@@ -57,17 +57,17 @@ const ProfileForm = () => {
     fetchUserInfo();
   }, [userData.UserId]);
 
-  // Handle image upload and preview
+ 
   const handleImgUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const imgUrl = URL.createObjectURL(file);
       setSelectedImage(imgUrl);
-      setImageFile(file); // Store the file for uploading in the PUT request
+      setImageFile(file); 
     }
   };
 
-  // Validate required fields
+  
   const validateFields = () => {
     let valid = true;
     let newErrors = { FirstName: "", LastName: "", Email: "" };
@@ -96,9 +96,9 @@ const ProfileForm = () => {
   };
 
   const handleSaveChanges = async () => {
-    // Validate fields before saving
+   
     if (!validateFields()) {
-      return; // Exit if validation fails
+      return; 
     }
 
     try {
@@ -109,7 +109,7 @@ const ProfileForm = () => {
       formData.append("phone", userData.phone);
       formData.append("location", userData.location);
 
-      // Append image file only if it's been changed
+      
       if (imageFile) {
         formData.append("ProfilePicture", imageFile);
       }
@@ -141,7 +141,7 @@ const ProfileForm = () => {
         <div className="flex items-center gap-2 text-black">
           <div className="img relative">
             <img
-              src={selectedImage || "/assets/icons/Account.svg"} // Default image
+              src={selectedImage || "/assets/icons/Account.svg"} 
               alt="Profile Image"
               width={1000}
               height={1000}
