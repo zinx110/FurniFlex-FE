@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 
+import PageLayout from "./components/PageLayout";
 import { AuthProvider } from "./contexts/AuthContext";
 import "./globals.css";
 
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
                 suppressHydrationWarning={true}
                 className={` ${geistBarlow.variable} font-sans text-white`}
             >
-                <AuthProvider>{children}</AuthProvider>
+                <AuthProvider>
+                    <PageLayout>{children}</PageLayout>
+                </AuthProvider>
             </body>
         </html>
     );

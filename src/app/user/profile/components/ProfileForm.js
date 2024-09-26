@@ -1,16 +1,17 @@
 "use client";
-import { React, useState, useEffect } from "react";
 import axios from "axios"; // Ensure axios is imported
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { React, useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 
 const ProfileForm = () => {
-  const user = useAuth();
-  const userid =user.user.UserId
+  const { user } = useAuth();
+  const router = useRouter();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imageFile, setImageFile] = useState(null); // To store file data for POST request
+  const [imageFile, setImageFile] = useState(null); 
   const [userData, setUserData] = useState({
-    UserId: userid, 
+    UserId: user?.UserId || "",
     FirstName: "",
     LastName: "",
     Email: "",
@@ -25,10 +26,16 @@ const ProfileForm = () => {
 
   // Fetch user info by ID
   useEffect(() => {
+    if (!user) {
+      router.push("/");
+      return;
+    }
     const fetchUserInfo = async () => {
       try {
         // Fetch user data using the API endpoint
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userData.UserId}`);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${user.UserId}`
+        );
         const data = response.data;
 
         setUserData({
@@ -40,34 +47,31 @@ const ProfileForm = () => {
           location: data.Location,
         });
 
-        
-        const imageResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userData.UserId}/Image`, {
-          responseType: 'blob',
-        });
-
-       
+        // Fetch user image
+        const imageResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${data.UserId}/Image`,
+          { responseType: "blob" }
+        );
         const imageUrl = URL.createObjectURL(imageResponse.data);
         setSelectedImage(imageUrl);
-
       } catch (error) {
-        console.error("Failed to fetch user data:", error);
+        console.error("Error fetching user data:", error);
       }
     };
-
     fetchUserInfo();
-  }, [userData.UserId]);
+  }, [user, router]);
 
- 
+  // Handle image upload and preview
   const handleImgUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const imgUrl = URL.createObjectURL(file);
       setSelectedImage(imgUrl);
-      setImageFile(file); 
+      setImageFile(file); // Store the file for uploading in the PUT request
     }
   };
 
-  
+  // Validate required fields
   const validateFields = () => {
     let valid = true;
     let newErrors = { FirstName: "", LastName: "", Email: "" };
@@ -96,9 +100,8 @@ const ProfileForm = () => {
   };
 
   const handleSaveChanges = async () => {
-   
     if (!validateFields()) {
-      return; 
+      return; // Exit if validation fails
     }
 
     try {
@@ -109,12 +112,12 @@ const ProfileForm = () => {
       formData.append("phone", userData.phone);
       formData.append("location", userData.location);
 
-      
+      // Include image in form data if one has been uploaded
       if (imageFile) {
         formData.append("ProfilePicture", imageFile);
       }
 
-      // PUT request using axios
+      // PUT request to save user data
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${userData.UserId}`,
         formData,
@@ -135,13 +138,15 @@ const ProfileForm = () => {
     }
   };
 
+  if (!user) return null;
+
   return (
     <div className="profile-form w-1/2 bg-[#e9eae9] h-1/2 rounded-lg p-10 flex flex-col gap-3">
       <div className="img&Email">
         <div className="flex items-center gap-2 text-black">
           <div className="img relative">
             <img
-              src={selectedImage || "/assets/icons/Account.svg"} 
+              src={selectedImage || "/assets/icons/Account.svg"} // Default image
               alt="Profile Image"
               width={1000}
               height={1000}
@@ -164,14 +169,16 @@ const ProfileForm = () => {
               type="file"
               accept="image/*"
               onChange={handleImgUpload}
-              className="hidden" 
+              className="hidden"
             />
           </label>
           <div className="flex flex-col">
             <span className="text-[#1F2937] font-medium text-[18px]">
               {userData.FirstName} {userData.LastName}
             </span>
-            <span className="text-[#6B7280] text-[14px]">{userData.Email}</span>
+            <span className="text-[#6B7280] text-[14px]">
+              {userData.Email}
+            </span>
           </div>
         </div>
       </div>
