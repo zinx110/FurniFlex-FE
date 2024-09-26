@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { User } from "../../../types/User";
 import { useAuth } from "../../contexts/AuthContext";
 import CartItem from "../../store/cart/components/CartItem";
+import Link from "next/link";
 
 const Signup = () => {
     const { user, setUser } = useAuth();
@@ -117,7 +118,7 @@ const Signup = () => {
                         <span className="text-white">Furni</span>
                         <span className="text-[#4977EE]">Flex</span>
                     </h1>
-                    <span className="font-light text-center">
+                    <span className="font-light text-center text-white">
                         Discover a seamless shopping experience with our curated
                         collection of products. From fashion to electronics, we
                         bring quality.
@@ -233,6 +234,29 @@ const Signup = () => {
                                 ))}
                             </div>
                         )}
+                        
+                    </div>
+                    <div className="others mt-[1rem]">
+                        <div className="flex items-center justify-center">
+                            <span className="bg-[#F1F0F0] h-[0.05rem] overflow-hidden mt-1 w-[40%]">
+                                .
+                            </span>
+                            <span>or</span>
+                            <span className="bg-[#F1F0F0] h-[0.05rem] overflow-hidden mt-1 w-[40%]">
+                                .
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-center mt-5">
+                            <span>
+                                Have an account?{" "}
+                                <Link
+                                    href="/auth/login"
+                                    className="text-[#0F3DDE]"
+                                >
+                                    Signin
+                                </Link>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

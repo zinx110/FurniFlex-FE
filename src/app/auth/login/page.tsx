@@ -175,32 +175,6 @@ const Login = () => {
                                 .
                             </span>
                         </div>
-                        <div className="flex gap-3 mt-3">
-                            <button className="flex items-center justify-center w-[219px] h-[52px] border rounded-md p-1 pl-2">
-                                <Image
-                                    className="w-[24px] h-[24px]"
-                                    src="/assets/icons/icons8-google 1.svg"
-                                    alt="Google Icon"
-                                    width={24}
-                                    height={24}
-                                />
-                                <span className="text-[12px] pl-2">
-                                    Sign in with Google
-                                </span>
-                            </button>
-                            <button className="flex items-center justify-center w-[219px] h-[52px] border rounded-md p-1 pl-2">
-                                <Image
-                                    className="w-[24px] h-[24px]"
-                                    src="/assets/icons/icons8-apple-logo 1.svg"
-                                    alt="Apple Icon"
-                                    width={24}
-                                    height={24}
-                                />
-                                <span className="text-[12px] pl-2">
-                                    Sign in with Apple
-                                </span>
-                            </button>
-                        </div>
                         <div className="flex items-center justify-center mt-5">
                             <span>
                                 Don&apos;t have an account?{" "}
@@ -226,7 +200,7 @@ const Login = () => {
                         <span>Furni</span>
                         <span className="text-[#4977EE]">Flex</span>
                     </h1>
-                    <span className="font-light text-center">
+                    <span className="font-light text-center text-white">
                         Discover a seamless shopping experience with our curated
                         collection of products. From fashion to electronics, we
                         bring quality.
