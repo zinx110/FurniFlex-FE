@@ -49,7 +49,7 @@ const Products = ({ products, selectedCategory }) => {
 
     return (
         <div className="main w-full h-[1128px]">
-            <div className="sub-main max-h-[1032px] grid grid-cols-4 gap-y-12 justify-items-center">
+            <div className="sub-main max-h-[1032px] grid grid-cols-1 lg:grid-cols-4 gap-y-12 justify-items-center">
                 {currentItems.map((item) => (
                     <ProductCard key={item.ProductId} item={item} />
                 ))}

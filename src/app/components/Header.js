@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useAuth } from "../contexts/AuthContext";
@@ -30,14 +31,17 @@ const Barlist = [
 const Header = () => {
     const router = useRouter();
     const { user } = useAuth();
-    const UserId = user.UserId;
 
     const handleCartClick = () => {
-        router.push("../store/cart");
+        router.push("/store/cart");
+    };
+    const handleProfileClick = () => {
+        if (!user) return;
+        router.push("/user/profile");
     };
 
     return (
-        <div className="header flex h-[118px] items-center justify-between bg-white pl-[120px] pr-[120px] text-black border-b overflow-y-auto">
+        <div className="header flex h-[118px] items-center justify-between bg-gray-300 px-6 lg:pl-[120px] lg:pr-[120px] text-black border-b overflow-y-auto">
             <a href="/" className="logo flex gap-1">
                 <div className="bg-[#1E99F5] h-[38px] w-[38px] flex items-center justify-center rounded-full  italic text-[24px]">
                     <span>f</span>
@@ -74,16 +78,43 @@ const Header = () => {
                         height={1440}
                     />
                 </button>
-                <button className="profile rounded-full object-cover overflow-hidden">
-                    <img
-                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${UserId}/Image`}
-                        alt="alt"
-                        className="w-[40px] min-w-[40px] min-h-[40px] h-[40px] "
-                        width={1440}
-                        height={1440}
+                <button
+                    className="profile rounded-full object-cover overflow-hidden"
+                    onClick={handleProfileClick}
+                >
+                    {user ? (
+                        <img
+                            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/${user.UserId}/Image`}
+                            alt="alt"
+                            className="w-[40px] min-w-[40px] min-h-[40px] h-[40px] "
+                            width={1440}
+                            height={1440}
                         />
+                    ) : (
+                        <img
+                            src={`/assets/icons/Account.svg`}
+                            alt="alt"
+                            className="w-[40px] min-w-[40px] min-h-[40px] h-[40px] "
+                            width={1440}
+                            height={1440}
+                        />
+                    )}
                 </button>
-                <span className="text-lg -m-2">Hi,<span className="font-bold text-gray-700">{user.FirstName}</span></span>
+                {user ? (
+                    <span className="text-lg -m-2">
+                        Hi,
+                        <span className="font-bold text-gray-700">
+                            {user?.FirstName}
+                        </span>
+                    </span>
+                ) : (
+                    <Link
+                        href="/auth/login"
+                        className="font-bold text-gray-800"
+                    >
+                        Login
+                    </Link>
+                )}
             </div>
         </div>
     );

@@ -19,7 +19,6 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 interface AuthContextProps {
-    userToken: string;
     user: User;
     setUser: Dispatch<SetStateAction<User>>;
     logout: () => void;
@@ -27,8 +26,6 @@ interface AuthContextProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [initializing, setInitializing] = useState(true);
-
-    const [userToken, setUserToken] = useState("");
 
     const [user, setUser] = useState<User>(null);
 
@@ -61,6 +58,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 Orders: data.Orders || [],
                 Reviews: data.Reviews || [],
                 AuthToken: token,
+                Role: data.Role,
+                RoleId: data.RoleId,
             };
             setUser(fetchedUser);
             setInitializing(false);
@@ -71,8 +70,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
     const logout = () => {
         localStorage.removeItem("furniflex-userToken");
-
-        setUserToken("");
         setUser(null);
     };
     useEffect(() => {
@@ -81,14 +78,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         // Only set user details if the token is present
         _userToken = "1sdfadfdfaf";
         if (!_userToken) {
-            setUserToken("");
             setUser(null);
             setInitializing(false);
             return;
         }
 
         // Set the user state with values from localStorage
-        setUserToken(_userToken);
+
         getUserData(_userToken);
     }, []);
 
@@ -99,7 +95,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return (
         <AuthContext.Provider
             value={{
-                userToken,
                 user,
                 setUser,
                 logout,

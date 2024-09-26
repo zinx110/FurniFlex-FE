@@ -1,4 +1,5 @@
 import { Cart } from "./Cart";
+import { Role } from "./Role";
 
 export type User = null | {
     Email: string;
@@ -12,4 +13,6 @@ export type User = null | {
     Orders: any[];
     Reviews: any[];
     AuthToken: string;
+    RoleId: number;
+    Role: Role;
 };
