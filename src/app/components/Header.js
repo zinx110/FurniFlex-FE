@@ -41,7 +41,7 @@ const Header = () => {
     };
 
     return (
-        <div className="header flex h-[118px] items-center justify-between bg-gray-300 px-6 lg:pl-[120px] lg:pr-[120px] text-black border-b overflow-y-auto">
+        <div className="header flex h-[118px] items-center justify-between bg-gray-100 px-6 lg:pl-[120px] lg:pr-[120px] text-black border-b overflow-y-auto">
             <a href="/" className="logo flex gap-1">
                 <div className="bg-[#1E99F5] h-[38px] w-[38px] flex items-center justify-center rounded-full  italic text-[24px]">
                     <span>f</span>
