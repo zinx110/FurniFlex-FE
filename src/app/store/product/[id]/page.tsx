@@ -54,7 +54,7 @@ const ProductDetailsPage = () => {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-6 text-black">
+            <h1 className="text-2xl font-bold bg-gray-100 text-black px-[80px]">
                 Product Details
             </h1>
             <div className="min-h-screen bg-gray-100 p-8 flex items-center justify-center">
