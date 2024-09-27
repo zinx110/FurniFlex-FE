@@ -19,6 +19,7 @@ export const ViewEditProducts = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [searchTerm, setSearchTerm] = useState(''); // Add state for search term
 
   useEffect(() => {
     fetchData();
@@ -181,8 +182,8 @@ export const ViewEditProducts = () => {
       try {
         const response = await axios.delete(`https://localhost:44344/api/products/${productId}`);
         if (response.status === 200) {
-          setMessage(response.data); // Show success message
-          fetchData(); // Refresh product list after deletion
+          setMessage(response.data); 
+          fetchData(); 
         }
       } catch (error) {
         setMessage('Error deleting product: ' + error.message);
@@ -195,6 +196,11 @@ export const ViewEditProducts = () => {
     return category ? category.Name : 'Unknown Category';
   };
 
+  // Filter products based on search term
+  const filteredProducts = products.filter((product) =>
+    product.Name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="max-w-full h-auto mx-auto py-10 px-10 bg-white text-black">
       <h1 className="text-2xl font-bold mb-6">View & Edit Products</h1>
@@ -202,6 +208,17 @@ export const ViewEditProducts = () => {
       {loading && <p className="text-blue-500">Loading...</p>}
 
       {message && <p className="text-green-500">{message}</p>}
+
+      {/* Search Input */}
+      <div className="mb-6 w-full flex justify-center">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border p-2 w-[320px]"
+        />
+      </div>
 
       <table className="table-auto w-full mb-10">
         <thead>
@@ -216,7 +233,7 @@ export const ViewEditProducts = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <tr key={product.ProductId}>
               <td className="border px-4 py-2">{product.Name}</td>
               <td className="border px-4 py-2">${product.DiscountedPrice.toFixed(2)}</td>
@@ -330,6 +347,5 @@ export const ViewEditProducts = () => {
     </div>
   );
 };
-
 
 export default ViewEditProducts;

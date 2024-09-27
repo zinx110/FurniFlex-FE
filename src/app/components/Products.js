@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import ProductCard from "./ProductCard";
+import Search from "./Search"; // Import the Search component
 
 // Update Products to accept products and a selected category
 const Products = ({ products, selectedCategory }) => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState(""); // Add searchTerm state
     const itemsPerPage = 8;
 
     // Function to calculate the main price based on discounted price and discount percentage
@@ -14,10 +16,16 @@ const Products = ({ products, selectedCategory }) => {
         return (discountedPrice / (1 - discountPercentage / 100)).toFixed(2);
     };
 
-    // Filter products based on the selected category
+    // Filter products based on the selected category and search term
     const filteredProducts = selectedCategory
-        ? products.filter((product) => product.CategoryId === selectedCategory)
-        : products;
+        ? products.filter(
+            (product) =>
+                product.CategoryId === selectedCategory &&
+                product.Name.toLowerCase().includes(searchTerm.toLowerCase()) // Filter by search term
+        )
+        : products.filter((product) =>
+            product.Name.toLowerCase().includes(searchTerm.toLowerCase()) // Filter by search term
+        );
 
     // Map through filtered products to include main price calculation
     const updatedProductList = filteredProducts.map((product) => {
@@ -49,6 +57,7 @@ const Products = ({ products, selectedCategory }) => {
 
     return (
         <div className="main w-full h-[1128px]">
+           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> 
             <div className="sub-main max-h-[1032px] grid grid-cols-1 lg:grid-cols-4 gap-y-12 justify-items-center">
                 {currentItems.map((item) => (
                     <ProductCard key={item.ProductId} item={item} />
