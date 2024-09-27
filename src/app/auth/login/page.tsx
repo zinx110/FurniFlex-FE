@@ -136,7 +136,7 @@ const Login = () => {
                             />
                         </div>
                         <div className="flex justify-end text-[14px] -mt-2 text-[#1E99F5]">
-                            <Link href="/forgot-password">
+                            <Link href="/auth/forgot-password">
                                 Forgot Password?
                             </Link>
                         </div>

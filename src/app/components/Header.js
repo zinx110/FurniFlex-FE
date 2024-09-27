@@ -28,6 +28,29 @@ const Barlist = [
     },
 ];
 
+const AdminRouteList = [
+    {
+        id: 1,
+        name: "Dashboard",
+        link: "/admin/dashboard",
+    },
+    {
+        id: 2,
+        name: "Roles",
+        link: "/admin/manage-roles",
+    },
+    {
+        id: 3,
+        name: "Manage Products",
+        link: "/admin/view-edit-products",
+    },
+    {
+        id: 5,
+        name: "About",
+        link: "/",
+    },
+];
+
 const Header = () => {
     const router = useRouter();
     const { user } = useAuth();
@@ -52,16 +75,31 @@ const Header = () => {
                     </span>
                 </div>
             </a>
-            <div className="middle-selection flex  gap-[3.5rem] font-medium  h-20 items-center">
-                {Barlist.map((item) => (
-                    <a
-                        key={item.id}
-                        href={item.link}
-                        className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 "
-                    >
-                        {item.name}
-                    </a>
-                ))}
+            <div className="flex-1 max-w-[500px] middle-selection flex flex-col h-20  justify-center">
+                <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
+                    {Barlist.map((item) => (
+                        <a
+                            key={item.id}
+                            href={item.link}
+                            className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 flex-1"
+                        >
+                            {item.name}
+                        </a>
+                    ))}
+                </div>
+                {user?.Role?.Name === "customer" ? (
+                    <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
+                        {AdminRouteList.map((item) => (
+                            <a
+                                key={item.id}
+                                href={item.link}
+                                className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2  flex-1"
+                            >
+                                {item.name}
+                            </a>
+                        ))}
+                    </div>
+                ) : null}
             </div>
             <div className="shops&profile-icon flex items-center justify-center gap-5">
                 <button onClick={handleCartClick} className="shops relative ">

@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 
 import PageLayout from "./components/PageLayout";
 import { AuthProvider } from "./contexts/AuthContext";
+import { CheckoutProvider } from "./contexts/CheckoutContext";
 import "./globals.css";
 
 const geistBarlow = localFont({
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
                 className={` ${geistBarlow.variable} font-sans text-white`}
             >
                 <AuthProvider>
-                    <PageLayout>{children}</PageLayout>
+                    <CheckoutProvider>
+                        <PageLayout>{children}</PageLayout>
+                    </CheckoutProvider>
                 </AuthProvider>
             </body>
         </html>

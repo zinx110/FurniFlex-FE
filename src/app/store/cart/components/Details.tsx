@@ -2,9 +2,11 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import ProductCart from "../../../Data/Product.json";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useCheckout } from "../../../contexts/CheckoutContext";
 
 const Details = () => {
     const { user } = useAuth();
+    const { setOrderDetails } = useCheckout();
     const router = useRouter();
     const [subTotal, setSubTotal] = useState<number>(0);
     useEffect(() => {
@@ -22,7 +24,10 @@ const Details = () => {
         0
     );
     function goToCheckout() {
-        router.push("/store/checkout");
+        router.push("/store/checkout/address-form");
+        setOrderDetails({
+            subTotal: subtotal,
+        });
     }
     return (
         <div className="order-view w-[440px]  flex flex-col gap-8 ">

@@ -14,8 +14,8 @@ const Sidebar = () => {
         },
         {
             id: 2,
-            name: "Settings",
-            path: "/settings",
+            name: "Change Password",
+            path: "/user/change_password",
             imgUrl: "/assets/icons/setting.svg",
         },
         {
@@ -34,7 +34,7 @@ const Sidebar = () => {
         router.push("/auth/login");
     };
     return (
-        <div className="bg-[#e9eae9] w-1/4 rounded-lg p-10 h-[50%] text-black">
+        <div className="bg-[#e9eae9] w-1/4 rounded-lg py-10 px-4 lg:px-10 h-[50%] text-black">
             <div className="text-[18px] font-semibold">Options</div>
             <hr className="border-gray-500 border-t-[0.1px] mt-2" />
             <div className="mt-8 flex flex-col gap-3">

@@ -1,14 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 const ProductCard = ({ item }) => {
+    const { user } = useAuth();
     return (
-        <Link href={`/store/product/${item.ProductId}`} key={item.ProductId}>
-            <div className="product-card max-w-[277px] max-h-[484px] flex flex-col justify-between border rounded-xl p-3">
-                <div>
+        <Link
+            href={`${
+                user?.Role.Name === "admin"
+                    ? "/admin/view-edit-products/"
+                    : `/store/product/${item.ProductId}`
+            }`}
+            key={item.ProductId}
+        >
+            <div className="product-card max-w-[277px] max-h-[484px] flex flex-col justify-between border rounded-xl p-4">
+                <div className="w-full aspect-square">
                     <img
-                        className="bg-[#F2F2F2] rounded-lg p-2"
+                        className="bg-[#F2F2F2] rounded-lg object-cover h-full w-full"
                         src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/${item.ProductId}/image`}
                         alt={item.Name}
                         width={1440}
@@ -35,7 +44,7 @@ const ProductCard = ({ item }) => {
                         {item.Description}
                     </span>
                 </div>
-                <div>
+                {/* <div>
                     <button
                         className="bg-black h-[42px] max-w-[277px] w-full rounded-lg flex items-center justify-center gap-3"
                         onClick={() => console.log("Added to cart")}
@@ -52,7 +61,7 @@ const ProductCard = ({ item }) => {
                             Add to cart
                         </span>
                     </button>
-                </div>
+                </div> */}
             </div>
         </Link>
     );
