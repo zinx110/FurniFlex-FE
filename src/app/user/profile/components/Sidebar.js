@@ -20,9 +20,9 @@ const Sidebar = () => {
         },
         {
             id: 3,
-            name: "Notifications",
-            path: "/notifications",
-            imgUrl: "/assets/icons/bell.svg",
+            name: "My Orders",
+            path: "/user/my-orders",
+            imgUrl: "/assets/icons/orders.svg",
         },
     ];
 

@@ -17,13 +17,20 @@ type Address = {
 type OrderDetails = {
     subTotal: number;
 };
+
+type PaymentInfo = {
+    cardNumber: string;
+    expiryDate: string;
+    cvv: string;
+    paymentMethod: "Visa" | "Mastercard" | "Bkash";
+};
 interface CheckoutContextType {
     orderDetails: OrderDetails;
     address: Address;
-    paymentInfo: any;
+    paymentInfo: PaymentInfo;
     setOrderDetails: Dispatch<SetStateAction<OrderDetails>>;
     setAddress: Dispatch<SetStateAction<Address>>;
-    setPaymentInfo: (paymentInfo: any) => void;
+    setPaymentInfo: Dispatch<SetStateAction<PaymentInfo>>;
 }
 
 const CheckoutContext = createContext<CheckoutContextType>(
@@ -45,7 +52,12 @@ export const CheckoutProvider = ({
         country: "",
         contactPhone: "",
     });
-    const [paymentInfo, setPaymentInfo] = useState(null);
+    const [paymentInfo, setPaymentInfo] = useState({
+        cardNumber: "",
+        expiryDate: "",
+        cvv: "",
+        paymentMethod: "Visa",
+    });
 
     const value = {
         orderDetails,

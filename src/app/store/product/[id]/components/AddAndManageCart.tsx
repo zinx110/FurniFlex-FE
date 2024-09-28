@@ -195,7 +195,10 @@ const AddAndManageCart = ({ product }: AddAndManageCartProp) => {
                                 buttonLoading
                             }
                             className={`${
-                                product.Quantity ? "bg-blue-600" : "bg-gray-200"
+                                product.Quantity &&
+                                product.Quantity > cart.Quantity
+                                    ? "bg-blue-600"
+                                    : "bg-gray-200"
                             } text-white py-2 px-4 rounded-lg transition hover:${
                                 product.Quantity
                                     ? "bg-blue-700"

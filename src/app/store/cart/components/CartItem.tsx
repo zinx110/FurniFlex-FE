@@ -14,6 +14,18 @@ const CartItem = ({ cart }: CartItemProps) => {
             alert("Please log in to add item to cart");
             return;
         }
+        console.log(val);
+        if (val > 0) {
+            if (
+                cart?.Product?.Quantity &&
+                cart.Quantity >= cart?.Product?.Quantity
+            ) {
+                alert(
+                    `Cannot add more. Only ${cart?.Product?.Quantity} number of products are in stock`
+                );
+                return;
+            }
+        }
         setButtonLoading(true);
         try {
             const cartId = cart.CartId;

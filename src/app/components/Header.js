@@ -46,8 +46,8 @@ const AdminRouteList = [
     },
     {
         id: 5,
-        name: "About",
-        link: "/",
+        name: "Manage Orders",
+        link: "/admin/manage-orders",
     },
 ];
 
@@ -56,10 +56,17 @@ const Header = () => {
     const { user } = useAuth();
 
     const handleCartClick = () => {
+        if (!user) {
+            alert("You must be logged in to use cart");
+            return;
+        }
         router.push("/store/cart");
     };
     const handleProfileClick = () => {
-        if (!user) return;
+        if (!user) {
+            alert("You must be logged in to see profile ");
+            return;
+        }
         router.push("/user/profile");
     };
 
@@ -75,32 +82,34 @@ const Header = () => {
                     </span>
                 </div>
             </a>
-            <div className="flex-1 max-w-[500px] middle-selection flex flex-col h-20  justify-center">
-                <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
-                    {Barlist.map((item) => (
-                        <a
-                            key={item.id}
-                            href={item.link}
-                            className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 flex-1"
-                        >
-                            {item.name}
-                        </a>
-                    ))}
-                </div>
-                {user?.Role?.Name === "customer" ? (
+            {user ? (
+                <div className="flex-1 max-w-[500px] middle-selection flex flex-col h-20  justify-center">
                     <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
-                        {AdminRouteList.map((item) => (
+                        {Barlist.map((item) => (
                             <a
                                 key={item.id}
                                 href={item.link}
-                                className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2  flex-1"
+                                className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 flex-1"
                             >
                                 {item.name}
                             </a>
                         ))}
                     </div>
-                ) : null}
-            </div>
+                    {user?.Role?.Name === "customer" ? (
+                        <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
+                            {AdminRouteList.map((item) => (
+                                <a
+                                    key={item.id}
+                                    href={item.link}
+                                    className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2  flex-1"
+                                >
+                                    {item.name}
+                                </a>
+                            ))}
+                        </div>
+                    ) : null}
+                </div>
+            ) : null}
             <div className="shops&profile-icon flex items-center justify-center gap-5">
                 <button onClick={handleCartClick} className="shops relative ">
                     <div className=" absolute flex w-[16px] h-[16px] bg-[#323232] items-center justify-center rounded-full translate-x-4 translate-y-[1.1rem] mx-auto">
@@ -128,15 +137,7 @@ const Header = () => {
                             width={1440}
                             height={1440}
                         />
-                    ) : (
-                        <img
-                            src={`/assets/icons/Account.svg`}
-                            alt="alt"
-                            className="w-[40px] min-w-[40px] min-h-[40px] h-[40px] "
-                            width={1440}
-                            height={1440}
-                        />
-                    )}
+                    ) : null}
                 </button>
                 {user ? (
                     <span className="text-lg -m-2">
