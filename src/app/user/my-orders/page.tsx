@@ -20,7 +20,7 @@ const MyOrders = () => {
                         Authorization: `Bearer ${user.AuthToken}`, // Send JWT token for authentication
                     },
                 });
-
+                 console.log(response.data)  
                 if (response.status === 200) {
                     console.log("orders : ", response.data);
                     setOrders(response.data);
@@ -88,6 +88,9 @@ const MyOrders = () => {
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                            <div>
+                                <span className="font-bold"> Total Price: {order.TotalPrice}{`(${order.PaymentStatus})`}</span>
                             </div>
                         </div>
                     ))}

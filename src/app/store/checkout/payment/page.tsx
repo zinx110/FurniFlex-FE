@@ -10,7 +10,6 @@ const PaymentForm = () => {
         useCheckout();
     const { user } = useAuth();
     const router = useRouter();
-
     const [formData, setFormData] = useState(paymentInfo);
     const [errors, setErrors] = useState({
         paymentMethod: "",
