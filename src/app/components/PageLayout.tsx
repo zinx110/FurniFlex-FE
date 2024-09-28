@@ -1,4 +1,7 @@
+import Link from "next/link";
 import React, { ReactNode } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import AdminSidebar from "./AdminSidebar";
 import Footer from "./Footer";
 import Header from "./Header";
 interface PageLayoutProps {
@@ -6,11 +9,14 @@ interface PageLayoutProps {
 }
 const PageLayout = ({ children }: PageLayoutProps) => {
     return (
-        <div className=" w-full h-auto min-h-screen flex flex-col">
+        <div className=" w-full h-auto flex flex-col">
             <Header />
-            <main className=" w-full flex-1 bg-gray-100 text-black">
-                {children}
-            </main>
+            <div className=" flex w-full h-auto min-h-screen">
+                <AdminSidebar />
+                <div className="flex-grow  text-black">
+                    {children} {/* Admin content will go here */}
+                </div>
+            </div>
             <Footer />
         </div>
     );

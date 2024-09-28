@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <body
                 suppressHydrationWarning={true}
-                className={` ${geistBarlow.variable} font-sans text-white`}
+                className={` ${geistBarlow.variable} font-sans text-black bg-gray-100`}
             >
                 <AuthProvider>
                     <CheckoutProvider>

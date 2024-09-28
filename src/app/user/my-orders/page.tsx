@@ -20,7 +20,7 @@ const MyOrders = () => {
                         Authorization: `Bearer ${user.AuthToken}`, // Send JWT token for authentication
                     },
                 });
-                 console.log(response.data)  
+                console.log(response.data);
                 if (response.status === 200) {
                     console.log("orders : ", response.data);
                     setOrders(response.data);
@@ -51,15 +51,36 @@ const MyOrders = () => {
                 <div>You have no orders yet.</div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {orders.map((order) => (
+                    {orders.map((order, index) => (
                         <div
                             key={order.OrderId}
-                            className="border p-4 rounded shadow"
+                            className="border p-4 rounded shadow flex flex-col gap-2"
                         >
                             <h2 className="text-lg font-semibold">
-                                Order #{order.OrderId}
+                                Order ID : #{order.OrderId}
                             </h2>
-                            <p>Status: {order.OrderStatus}</p>
+                            <span
+                                className={`p-2 
+                                    ${
+                                        order.OrderStatus === "Processing" ||
+                                        order.OrderStatus === "Pending"
+                                            ? "bg-red-400"
+                                            : ""
+                                    }
+                                    ${
+                                        order.OrderStatus === "On the way"
+                                            ? "bg-yellow-300"
+                                            : ""
+                                    }
+                                    ${
+                                        order.OrderStatus === "Delivered"
+                                            ? "bg-green-300"
+                                            : ""
+                                    }
+                                `}
+                            >
+                                Status: {order.OrderStatus}
+                            </span>
                             <p>
                                 Order Date:{" "}
                                 {new Date(order.CreatedAt).toLocaleDateString()}
@@ -90,7 +111,11 @@ const MyOrders = () => {
                                 </ul>
                             </div>
                             <div>
-                                <span className="font-bold"> Total Price: {order.TotalPrice}{`(${order.PaymentStatus})`}</span>
+                                <span className="font-bold">
+                                    {" "}
+                                    Total Price: {order.TotalPrice}
+                                    {`(${order.PaymentStatus})`}
+                                </span>
                             </div>
                         </div>
                     ))}

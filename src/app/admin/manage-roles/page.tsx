@@ -3,6 +3,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Role } from "../../../types/Role";
+import { useAuth } from "../../contexts/AuthContext";
 
 const RolesPage: React.FC = () => {
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Roles`;
@@ -10,7 +11,7 @@ const RolesPage: React.FC = () => {
     const [newRoleName, setNewRoleName] = useState("");
     const [editingRoleId, setEditingRoleId] = useState<number | null>(null);
     const [editingRoleName, setEditingRoleName] = useState("");
-
+    const { user } = useAuth();
     // Fetch all roles on component mount
     useEffect(() => {
         fetchRoles();
@@ -18,7 +19,11 @@ const RolesPage: React.FC = () => {
 
     const fetchRoles = async () => {
         try {
-            const response = await axios.get<Role[]>(url);
+            const response = await axios.get<Role[]>(url, {
+                headers: {
+                    Authorization: `Bearer ${user?.AuthToken}`, // Send JWT token for authentication
+                },
+            });
             setRoles(response.data);
         } catch (error) {
             console.error("Error fetching roles:", error);
@@ -29,10 +34,19 @@ const RolesPage: React.FC = () => {
         if (newRoleName === "") return;
 
         try {
-            await axios.post(url, { Name: newRoleName });
+            await axios.post(
+                url,
+                { Name: newRoleName },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user?.AuthToken}`, // Send JWT token for authentication
+                    },
+                }
+            );
             setNewRoleName("");
             fetchRoles(); // Re-fetch roles after adding a new one
         } catch (error) {
+            alert(error);
             console.error("Error adding role:", error);
         }
     };
@@ -46,14 +60,23 @@ const RolesPage: React.FC = () => {
         if (editingRoleId === null || editingRoleName === "") return;
 
         try {
-            await axios.put(`${url}/${editingRoleId}`, {
-                Name: editingRoleName,
-                RoleId: editingRoleId,
-            });
+            await axios.put(
+                `${url}/${editingRoleId}`,
+                {
+                    Name: editingRoleName,
+                    RoleId: editingRoleId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user?.AuthToken}`, // Send JWT token for authentication
+                    },
+                }
+            );
             setEditingRoleId(null);
             setEditingRoleName("");
             fetchRoles(); // Re-fetch roles after editing
         } catch (error) {
+            alert(error);
             console.error("Error updating role:", error);
         }
     };

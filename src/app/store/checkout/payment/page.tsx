@@ -2,13 +2,14 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { User } from "../../../../types/User";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useCheckout } from "../../../contexts/CheckoutContext";
 
 const PaymentForm = () => {
     const { address, orderDetails, paymentInfo, setPaymentInfo } =
         useCheckout();
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const router = useRouter();
     const [formData, setFormData] = useState(paymentInfo);
     const [errors, setErrors] = useState({
@@ -117,6 +118,7 @@ const PaymentForm = () => {
                 CartItems: user.CartItems.map((cartItem) => ({
                     ProductId: cartItem.ProductId,
                     Quantity: cartItem.Quantity,
+                    CartId: cartItem.CartId,
                 })),
             };
             const response = await axios.post(url, reqBody, {
@@ -127,6 +129,7 @@ const PaymentForm = () => {
             });
             console.log(response);
             if (response.status === 201) {
+                setUser((prev) => ({ ...prev, CartItems: [] } as User));
                 alert("Successfully places your order");
                 router.push("/user/my-orders");
             } else {

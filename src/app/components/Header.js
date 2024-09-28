@@ -18,36 +18,13 @@ const Barlist = [
     },
     {
         id: 3,
-        name: "Categories",
-        link: "/",
+        name: "My Orders",
+        link: "/user/my-orders",
     },
     {
-        id: 5,
+        id: 4,
         name: "About",
         link: "/",
-    },
-];
-
-const AdminRouteList = [
-    {
-        id: 1,
-        name: "Dashboard",
-        link: "/admin/dashboard",
-    },
-    {
-        id: 2,
-        name: "Roles",
-        link: "/admin/manage-roles",
-    },
-    {
-        id: 3,
-        name: "Manage Products",
-        link: "/admin/view-edit-products",
-    },
-    {
-        id: 5,
-        name: "Manage Orders",
-        link: "/admin/manage-orders",
     },
 ];
 
@@ -95,19 +72,6 @@ const Header = () => {
                             </a>
                         ))}
                     </div>
-                    {user?.Role?.Name === "customer" ? (
-                        <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
-                            {AdminRouteList.map((item) => (
-                                <a
-                                    key={item.id}
-                                    href={item.link}
-                                    className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2  flex-1"
-                                >
-                                    {item.name}
-                                </a>
-                            ))}
-                        </div>
-                    ) : null}
                 </div>
             ) : null}
             <div className="shops&profile-icon flex items-center justify-center gap-5">

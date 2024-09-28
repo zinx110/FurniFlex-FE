@@ -138,6 +138,8 @@ const ProfileForm = () => {
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
+
+                        Authorization: `Bearer ${user?.AuthToken}`, // Send JWT token for authentication
                     },
                 }
             );

@@ -1,29 +1,34 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-const AdminLayout = ({ children }) => {
+export default function AdminSidebar() {
     const { user } = useAuth();
-    const router = useRouter();
-    useEffect(() => {
-        if (!user || user.Role.Name !== "admin") {
-            router.push("/");
-            return;
-        }
-    }, [user]);
     if (!user || user.Role.Name !== "admin") {
         return null;
     }
-    return <>{children}</>;
-};
+    return (
+        <div className="w-64 h-screen bg-gray-800 text-white flex flex-col">
+            <ul className="flex flex-col p-4">
+                {AdminRouteList.map((route) => (
+                    <li key={route.id} className="mb-3">
+                        <Link href={route.link}>
+                            <p className="block p-2 rounded-md hover:bg-gray-700">
+                                {route.name}
+                            </p>
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
 
-export default AdminLayout;
 const AdminRouteList = [
     {
         id: 1,
-        name: "Dashboard",
+        name: "Admin Dashboard",
         link: "/admin/dashboard",
     },
     {
