@@ -26,7 +26,7 @@ const SocialInfo = [
 
 const Footer = () => {
   return (
-    <div className="Footer flex flex-col h-[590px] text-white  px-[120px] pt-[80px] ">
+    <div className="Footer flex flex-col h-[590px] text-white  px-[120px] pt-[80px] bg-black overflow-hidden">
       <div className="top-info sm:flex  justify-between">
         <div>
           <a href="/" className="logo flex gap-1">
@@ -98,7 +98,7 @@ const Footer = () => {
           <span>🇺🇸 United States (English)</span>
         </div>
       </div>
-      <div className="copy-rights flex text-[#323544] justify-center mt-[44px]">
+      <div className="copy-rights flex text-[#323544] justify-center mt-[38px]">
         <span>EEVE © 2024. All rights reserved.</span>
       </div>
     </div>

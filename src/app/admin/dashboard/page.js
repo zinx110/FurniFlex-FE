@@ -11,41 +11,20 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
 } from 'recharts';
+import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Dashboard = () => {
-  // Dummy data mimicking the responses from APIs
+  const { user } = useAuth();
   const [dashboardData, setDashboardData] = useState({
-    totalUsers: 1000, // API 1: Total Users
-    totalProducts: 500, // API 2: Total Products
-    totalCategories: 5, // API 3: Total Categories
-    totalSales: 11400, // Total Sales
-    salesData: [], // Sales data based on createdAt
-    categoriesData: [ // Dummy categories data
-      { name: 'Electronics' },
-      { name: 'Clothing' },
-      { name: 'Groceries' },
-      { name: 'Books' },
-      { name: 'Sports' },
-    ]
+    totalUsers: 0,
+    totalProducts: 0,
+    totalCategories: 0,
+    totalSales: 0,
+    userGrowthData: [],
+    salesData: [],
   });
-
-  // Sample sales data you provided
-  const salesDataFromAPI = [
-    { createdAt: '2024-09-25 14:30:00', totalPrice: 1500 },
-    { createdAt: '2024-09-26 10:00:00', totalPrice: 1200 },
-    { createdAt: '2024-09-27 09:15:00', totalPrice: 1700 },
-    { createdAt: '2024-09-27 11:00:00', totalPrice: 1800 },
-    { createdAt: '2024-09-28 13:30:00', totalPrice: 2200 },
-    { createdAt: '2024-09-29 15:00:00', totalPrice: 2000 },
-    { createdAt: '2024-09-30 12:00:00', totalPrice: 1000 },
-  ];
-
-  // PieChart color palette
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   // Rolling up animation state
   const [animatedUsers, setAnimatedUsers] = useState(0);
@@ -57,14 +36,14 @@ const Dashboard = () => {
   const animateValue = (value, setValue) => {
     let start = 0;
     const end = value;
-    const duration = 1000; // Duration of the animation in milliseconds
-    const increment = Math.ceil(end / (duration / 100)); // Increment for each interval (100 ms)
+    const duration = 1000; // 1 second
+    const increment = Math.ceil(end / (duration / 100));
 
     const animate = () => {
       if (start < end) {
         start += increment;
-        setValue(Math.min(start, end)); // Ensure it doesn't exceed the end value
-        setTimeout(animate, 100); // Call again every 100ms
+        setValue(Math.min(start, end));
+        setTimeout(animate, 100);
       } else {
         setValue(end);
       }
@@ -72,42 +51,124 @@ const Dashboard = () => {
     animate();
   };
 
-  // Simulate API calls with useEffect and dummy data
+  // Fetch the total users from API
+  const fetchTotalUsers = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/TotalUserCount`, {
+        headers: {
+          Authorization: `Bearer ${user?.AuthToken}`,
+        },
+      });
+      const totalUsers = response.data;
+      setDashboardData(prevData => ({ ...prevData, totalUsers }));
+      animateValue(totalUsers, setAnimatedUsers);
+    } catch (error) {
+      console.error('Error fetching total users:', error);
+    }
+  };
+
+  // Fetch the total categories from API
+  const fetchTotalCategories = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Categories/Count`, {
+        headers: {
+          Authorization: `Bearer ${user?.AuthToken}`,
+        },
+      });
+      const { count: totalCategories } = response.data;
+      setDashboardData(prevData => ({ ...prevData, totalCategories }));
+      animateValue(totalCategories, setAnimatedCategories);
+    } catch (error) {
+      console.error('Error fetching total categories:', error);
+    }
+  };
+
+  // Fetch the total products from API
+  const fetchTotalProducts = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/Count`, {
+        headers: {
+          Authorization: `Bearer ${user?.AuthToken}`,
+        },
+      });
+      const totalProducts = response.data; // Assuming response.data returns a number
+      setDashboardData(prevData => ({ ...prevData, totalProducts }));
+      animateValue(totalProducts, setAnimatedProducts);
+    } catch (error) {
+      console.error('Error fetching total products:', error);
+    }
+  };
+
+  // Fetch sales data from API
+  const fetchSalesData = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Orders/SalesData`, {
+        headers: {
+          Authorization: `Bearer ${user?.AuthToken}`,
+        },
+      });
+      const salesData = response.data;
+
+      // Group sales data by day for visualization
+      const salesByDay = salesData.reduce((acc, sale) => {
+        const day = new Date(sale.CreatedAt).toLocaleDateString('en-US', { weekday: 'short' });
+        acc[day] = (acc[day] || 0) + sale.TotalPrice;
+        return acc;
+      }, {});
+
+      const salesDataArray = Object.entries(salesByDay).map(([name, totalPrice]) => ({ name, totalPrice }));
+
+      // Update the dashboard data state
+      setDashboardData(prevData => ({
+        ...prevData,
+        salesData: salesDataArray,
+        totalSales: salesData.reduce((total, sale) => total + sale.TotalPrice, 0),
+      }));
+
+      // Animate total sales value
+      animateValue(salesData.reduce((total, sale) => total + sale.TotalPrice, 0), setAnimatedSales);
+    } catch (error) {
+      console.error('Error fetching sales data:', error);
+    }
+  };
+
+  // Fetch user growth data from API
+  const fetchUserGrowthData = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Users/UserCreatedAtData`, {
+        headers: {
+          Authorization: `Bearer ${user?.AuthToken}`,
+        },
+      });
+      const userGrowthData = response.data;
+
+      // Group user data by day for visualization
+      const growthByDay = userGrowthData.reduce((acc, date) => {
+        const day = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+        acc[day] = (acc[day] || 0) + 1;
+        return acc;
+      }, {});
+
+      const userGrowthDataArray = Object.entries(growthByDay).map(([name, count]) => ({
+        name,
+        count,
+      }));
+
+      setDashboardData(prevData => ({
+        ...prevData,
+        userGrowthData: userGrowthDataArray,
+      }));
+    } catch (error) {
+      console.error('Error fetching user growth data:', error);
+    }
+  };
+
   useEffect(() => {
-    // Process sales data
-    const salesByDay = {};
-
-    salesDataFromAPI.forEach(sale => {
-      const date = new Date(sale.createdAt);
-      const day = date.toLocaleDateString('en-US', { weekday: 'short' }); // e.g., "Mon"
-      const totalPrice = sale.totalPrice;
-
-      // Aggregate sales by day
-      if (salesByDay[day]) {
-        salesByDay[day] += totalPrice;
-      } else {
-        salesByDay[day] = totalPrice;
-      }
-    });
-
-    // Convert aggregated sales data to an array format
-    const salesDataArray = Object.entries(salesByDay).map(([name, totalPrice]) => ({ name, totalPrice }));
-
-    // Calculate total sales
-    const totalSales = salesDataFromAPI.reduce((total, sale) => total + sale.totalPrice, 0);
-
-    // Update the dashboard state
-    setDashboardData(prevData => ({
-      ...prevData,
-      salesData: salesDataArray,
-      totalSales: totalSales,
-    }));
-
-    // Start the rolling-up animations
-    animateValue(dashboardData.totalUsers, setAnimatedUsers);
-    animateValue(dashboardData.totalProducts, setAnimatedProducts);
-    animateValue(dashboardData.totalCategories, setAnimatedCategories);
-    animateValue(dashboardData.totalSales, setAnimatedSales);
+    fetchTotalUsers(); 
+    fetchUserGrowthData(); 
+    fetchTotalCategories(); 
+    fetchTotalProducts(); 
+    fetchSalesData(); 
   }, []);
 
   return (
@@ -137,62 +198,30 @@ const Dashboard = () => {
       </div>
 
       <div className="charts-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-        {/* Sales Line Chart */}
         <div className="chart-box" style={{ flex: '1', minWidth: '300px', height: '300px' }}>
           <h2>Sales This Week</h2>
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={dashboardData.salesData} animationDuration={500}>
+            <LineChart data={dashboardData.salesData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="totalPrice" stroke="#8884d8" activeDot={{ r: 8 }} />
+              <Line type="monotone" name='Total sales' dataKey="totalPrice" stroke="#8884d8" activeDot={{ r: 8 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Users Bar Chart */}
         <div className="chart-box" style={{ flex: '1', minWidth: '300px', height: '300px' }}>
-          <h2>Total Users Growth</h2>
+          <h2>User Growth</h2>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={Array.from({ length: 7 }, (_, i) => ({ name: `Day ${i + 1}`, users: dashboardData.totalUsers / 7 }))} animationDuration={500}>
+            <BarChart data={dashboardData.userGrowthData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="users" fill="#82ca9d" animationDuration={500} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Products Bar Chart */}
-        <div className="chart-box" style={{ flex: '1', minWidth: '300px', height: '300px' }}>
-          <h2>Products Added</h2>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={Array.from({ length: 7 }, (_, i) => ({ name: `Day ${i + 1}`, products: dashboardData.totalProducts / 7 }))} animationDuration={500}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="products" fill="#ffc658" animationDuration={500} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Categories Bar Chart */}
-        <div className="chart-box" style={{ flex: '1', minWidth: '300px', height: '300px' }}>
-          <h2>Categories Distribution</h2>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={dashboardData.categoriesData.map(category => ({ name: category.name, count: 1 }))} animationDuration={500}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#8884d8" animationDuration={500} />
+              <Bar dataKey="count" fill="#82ca9d" />
             </BarChart>
           </ResponsiveContainer>
         </div>

@@ -9,7 +9,7 @@ export default function AdminSidebar() {
         return null;
     }
     return (
-        <div className="w-64 h-screen bg-gray-800 text-white flex flex-col">
+        <div className="w-64 bg-gray-800 text-white flex flex-col">
             <ul className="flex flex-col p-4">
                 {AdminRouteList.map((route) => (
                     <li key={route.id} className="mb-3">

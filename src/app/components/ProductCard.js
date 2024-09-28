@@ -44,7 +44,7 @@ const ProductCard = ({ item }) => {
                         {item.Description}
                     </span>
                 </div>
-                {/* <div>
+                <div>
                     <button
                         className="bg-black h-[42px] max-w-[277px] w-full rounded-lg flex items-center justify-center gap-3"
                         onClick={() => console.log("Added to cart")}
@@ -53,15 +53,15 @@ const ProductCard = ({ item }) => {
                         <Image
                             src="/assets/icons/AddedW.svg"
                             className="min-w-[18px] w-[18px] min-h-[18px] h-[18px]"
-                            alt="Add to cart"
+                            alt="Click to Buy"
                             width={1440}
                             height={1440}
                         />
                         <span className="text-white font-medium">
-                            Add to cart
+                        Click to Buy
                         </span>
                     </button>
-                </div> */}
+                </div>
             </div>
         </Link>
     );
