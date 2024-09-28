@@ -28,6 +28,7 @@ const AddAndManageCart = ({ product }: AddAndManageCartProp) => {
             alert("Please log in to add item to cart");
             return;
         }
+
         setButtonLoading(true);
         try {
             const cartId = cart.CartId;
@@ -76,6 +77,10 @@ const AddAndManageCart = ({ product }: AddAndManageCartProp) => {
     async function addToCart() {
         if (!user) {
             alert("Please log in to add item to cart");
+            return;
+        }
+        if (user.Role.Name === "admin") {
+            alert("You are an admin. Admin cannot have a cart.");
             return;
         }
         setButtonLoading(true);

@@ -10,6 +10,10 @@ const Details = () => {
     const router = useRouter();
     const [subTotal, setSubTotal] = useState<number>(0);
     useEffect(() => {
+        if (!user || user.Role.Name === "admin") {
+            alert("admin cannot have a cart.");
+            router.push("/admin/dashboard");
+        }
         if (!user || !user.CartItems) return;
 
         const sbtotal: number = user.CartItems.reduce(
@@ -18,15 +22,16 @@ const Details = () => {
             0
         );
         setSubTotal(sbtotal);
-    }, [user?.CartItems]);
-    const subtotal = ProductCart.reduce(
-        (total, product) => total + product.discountedPrice,
-        0
-    );
+    }, [user]);
+
     function goToCheckout() {
+        if (user?.Role.Name === "admin") {
+            alert("Admin Cannot checkout");
+            return;
+        }
         router.push("/store/checkout/address-form");
         setOrderDetails({
-            subTotal: subtotal,
+            subTotal: subTotal,
         });
     }
     return (
