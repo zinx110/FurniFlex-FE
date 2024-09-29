@@ -9,6 +9,7 @@ import Image from "next/image";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useAuth } from "../../../contexts/AuthContext";
 import AddAndManageCart from "./components/AddAndManageCart";
+import ReviewSection from "./components/ReviewSection";
 
 const ProductDetailsPage = () => {
     const { id } = useParams();
@@ -119,6 +120,7 @@ const ProductDetailsPage = () => {
                         <p className="text-gray-500 mt-4">
                             No reviews available.
                         </p>
+                        <ReviewSection productId={product.productId}/>
                     </div>
                 </div>
             </div>
