@@ -19,7 +19,7 @@ interface ReviewSectionProps {
 const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
   const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [eror, setEror] = useState("");
+  const [error, setError] = useState("");
   const [rating, setRating] = useState(0);
   const [newReview, setNewReview] = useState<Partial<Review>>({
     Rating: 0,
@@ -34,17 +34,12 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
       const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Reviews/Product/${productId}`;
       const response = await axios.get(url);
       setReviews(response.data);
-      let total=0
-      response.data?.forEach((item)=>{
 
-        let r = item.Rating
-        total=total+r
-
-      })
-      setRating (total/response?.data?.length)
-
-
-
+      let total = 0;
+      response.data.forEach((item: Review) => {
+        total += item.Rating;
+      });
+      setRating(total / response.data.length);
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
@@ -58,10 +53,19 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
     });
   };
 
+  // Helper function to display stars based on rating
+  const renderStars = (rating: number) => {
+    const fullStar = "★";
+    const emptyStar = "☆";
+    const maxStars = 5;
+    
+    // Create a string with `rating` full stars and (5 - rating) empty stars
+    return fullStar.repeat(rating) + emptyStar.repeat(maxStars - rating);
+  };
+
   // Submit a new review
   const submitReview = async () => {
-
-    setEror("")
+    setError("");
     if (!newReview.Rating || !newReview.Comment) {
       console.error('Rating and comment are required.');
       return;
@@ -70,7 +74,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
     try {
       const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Reviews`;
       await axios.post(
-         url,
+        url,
         {
           ...newReview,
           UserId: user?.UserId,
@@ -86,14 +90,14 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
       fetchReviews();
     } catch (error) {
       console.error('Error submitting review:', error);
-      const err= error?.response?.data?.Message || "Sabdane ekhane Bipod!!!!"
-      setEror(err)
+      const err = error?.response?.data?.Message || "Sabdane ekhane Bipod!!!!";
+      setError(err);
     }
   };
 
   // Handle editing an existing review
   const editReview = async () => {
-    setEror("")
+    setError("");
     if (!editingReview?.Rating || !editingReview?.Comment) {
       console.error('Rating and comment are required for editing.');
       return;
@@ -117,8 +121,8 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
       setIsEditing(false);
       fetchReviews();
     } catch (error) {
-      const err= error?.response?.data?.Message || "Sabdane ekhane Bipod!!!!"
-      setEror(err)
+      const err = error?.response?.data?.Message || "Sabdane ekhane Bipod!!!!";
+      setError(err);
       console.error('Error editing review:', error);
     }
   };
@@ -136,30 +140,42 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
   return (
     <div className="max-w-4xl mx-auto py-6">
       <h2 className="text-2xl font-bold mb-4">Product Reviews</h2>
-      <h2 className="text-xl font-bold mb-4">Overall Rating: {rating.toFixed(1)}</h2>
 
-      {/* Display reviews */}
-      <div className="space-y-4">
-        {reviews.map((review) => (
-          <div key={review.ReviewId} className="p-4 border border-gray-200 rounded-lg shadow-sm">
-            <p className="font-semibold">Rating: {review.Rating}</p>
-            <p>Comment: {review.Comment}</p>
-            <p className="text-sm text-gray-600">By User: {review.User?.FirstName+" " +review.User?.LastName}</p>
-            {review.UserId === user?.UserId && (
-              <button
-                onClick={() => startEditing(review)}
-                className="mt-2 text-blue-500 hover:underline"
-              >
-                Edit Review
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
+      <h2 className="text-xl font-bold mb-4">
+        Overall Rating: {rating.toFixed(1)} {renderStars(Math.round(rating))}
+      </h2>
+
+      {reviews.length ? (
+        <div className="space-y-4">
+          {reviews.map((review) => (
+            <div key={review.ReviewId} className="p-4 border border-gray-200 rounded-lg shadow-sm">
+              <p className="font-semibold">
+                Rating: {renderStars(review.Rating)}
+              </p>
+              <p className="font-semibold">Comment: {review.Comment}</p>
+              <p className="text-sm text-gray-600">
+                By User: {review.User?.FirstName} {review.User?.LastName}
+              </p>
+              {review.UserId === user?.UserId && (
+                <button
+                  onClick={() => startEditing(review)}
+                  className="mt-2 text-blue-500 hover:underline"
+                >
+                  Edit Review
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500 mt-4">No reviews available.</p>
+      )}
 
       {/* Review form */}
       <div className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-        <h3 className="text-xl font-semibold mb-4">{isEditing ? 'Edit Your Review' : 'Submit a Review'}</h3>
+        <h3 className="text-xl font-semibold mb-4">
+          {isEditing ? 'Edit Your Review' : 'Submit a Review'}
+        </h3>
 
         <label className="block mb-2 font-semibold">Rating:</label>
         <input
@@ -184,7 +200,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
         >
           {isEditing ? 'Update Review' : 'Submit Review'}
         </button>
-        <p className='text-red-700'>{eror}</p>
+        <p className='text-red-700'>{error}</p>
       </div>
     </div>
   );

@@ -40,14 +40,7 @@ export default function About() {
                     helping you create a beautiful and comfortable home.
                 </p>
 
-                <div className="mt-8">
-                    <a
-                        href="/contact"
-                        className="inline-flex items-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700"
-                    >
-                        Contact Us
-                    </a>
-                </div>
+                
             </div>
         </div>
     );

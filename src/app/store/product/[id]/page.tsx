@@ -117,10 +117,9 @@ const ProductDetailsPage = () => {
                         <h2 className="text-2xl font-semibold text-gray-800">
                             Reviews
                         </h2>
-                        <p className="text-gray-500 mt-4">
-                            No reviews available.
-                        </p>
-                        <ReviewSection productId={product.ProductId}/>
+                       
+                        <ReviewSection productId={product.ProductId} />
+                        
                     </div>
                 </div>
             </div>
