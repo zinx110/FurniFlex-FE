@@ -16,15 +16,11 @@ const Barlist = [
         name: "Products",
         link: "/",
     },
+
     {
         id: 3,
-        name: "My Orders",
-        link: "/user/my-orders",
-    },
-    {
-        id: 4,
         name: "About",
-        link: "/",
+        link: "/about",
     },
 ];
 
@@ -49,7 +45,7 @@ const Header = () => {
 
     return (
         <div className="header flex h-[118px] items-center justify-between bg-gray-100 px-6 lg:pl-[120px] lg:pr-[120px] text-black border-b overflow-y-auto">
-            <a href="/" className="logo flex gap-1">
+            <Link href="/" className="logo flex gap-1">
                 <div className="bg-[#1E99F5] h-[38px] w-[38px] flex items-center justify-center rounded-full  italic text-[24px]">
                     <span>f</span>
                 </div>
@@ -58,22 +54,31 @@ const Header = () => {
                         Furni<span className="text-[#1E99F5]">Flex</span>
                     </span>
                 </div>
-            </a>
-            {user ? (
-                <div className="flex-1 max-w-[500px] middle-selection flex flex-col h-20  justify-center">
-                    <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
-                        {Barlist.map((item) => (
-                            <a
-                                key={item.id}
-                                href={item.link}
-                                className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 flex-1"
-                            >
-                                {item.name}
-                            </a>
-                        ))}
-                    </div>
+            </Link>
+
+            <div className="flex-1 max-w-[500px] middle-selection flex flex-col h-20  justify-center">
+                <div className="w-full flex  gap-4 font-medium  flex-1 items-center justify-between">
+                    {Barlist.map((item) => (
+                        <Link
+                            key={item.id}
+                            href={item.link}
+                            className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 flex-1"
+                        >
+                            {item.name}
+                        </Link>
+                    ))}
+
+                    {user?.Role.name === "customer" ? (
+                        <Link
+                            href={"/user/my-orders"}
+                            className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 flex-1"
+                        >
+                            My Orders
+                        </Link>
+                    ) : null}
                 </div>
-            ) : null}
+            </div>
+
             <div className="shops&profile-icon flex items-center justify-center gap-5">
                 <button onClick={handleCartClick} className="shops relative ">
                     <div className=" absolute flex w-[16px] h-[16px] bg-[#323232] items-center justify-center rounded-full translate-x-4 translate-y-[1.1rem] mx-auto">

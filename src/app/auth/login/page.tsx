@@ -17,6 +17,10 @@ const Login = () => {
 
     useEffect(() => {
         if (user) {
+            if (user.Role.Name === "admin") {
+                route.push("/admin/dashboard");
+                return;
+            }
             route.push("/");
         }
     }, [user]);
