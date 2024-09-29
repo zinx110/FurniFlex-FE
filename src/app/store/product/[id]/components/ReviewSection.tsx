@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../../../contexts/AuthContext';
+import { User } from '../../../../../types/User';
 
 interface Review {
   ReviewId: number;
   Rating: number;
   Comment: string;
   UserId: number;
+  User: User;
   ProductId: number;
 }
 
@@ -17,6 +19,8 @@ interface ReviewSectionProps {
 const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
   const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [eror, setEror] = useState("");
+  const [rating, setRating] = useState(0);
   const [newReview, setNewReview] = useState<Partial<Review>>({
     Rating: 0,
     Comment: '',
@@ -27,8 +31,20 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
   // Fetch all reviews for this product
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(`/api/Reviews/product/${productId}`);
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Reviews/Product/${productId}`;
+      const response = await axios.get(url);
       setReviews(response.data);
+      let total=0
+      response.data?.forEach((item)=>{
+
+        let r = item.Rating
+        total=total+r
+
+      })
+      setRating (total/response?.data?.length)
+
+
+
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
@@ -44,14 +60,17 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
 
   // Submit a new review
   const submitReview = async () => {
+
+    setEror("")
     if (!newReview.Rating || !newReview.Comment) {
       console.error('Rating and comment are required.');
       return;
     }
 
     try {
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Reviews`;
       await axios.post(
-        '/api/Reviews',
+         url,
         {
           ...newReview,
           UserId: user?.UserId,
@@ -67,19 +86,23 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
       fetchReviews();
     } catch (error) {
       console.error('Error submitting review:', error);
+      const err= error?.response?.data?.Message || "Sabdane ekhane Bipod!!!!"
+      setEror(err)
     }
   };
 
   // Handle editing an existing review
   const editReview = async () => {
+    setEror("")
     if (!editingReview?.Rating || !editingReview?.Comment) {
       console.error('Rating and comment are required for editing.');
       return;
     }
 
     try {
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/Reviews/${editingReview?.ReviewId}`;
       await axios.put(
-        `/api/Reviews/${editingReview?.ReviewId}`,
+        url,
         {
           ...editingReview,
           UserId: user?.UserId,
@@ -94,6 +117,8 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
       setIsEditing(false);
       fetchReviews();
     } catch (error) {
+      const err= error?.response?.data?.Message || "Sabdane ekhane Bipod!!!!"
+      setEror(err)
       console.error('Error editing review:', error);
     }
   };
@@ -111,6 +136,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
   return (
     <div className="max-w-4xl mx-auto py-6">
       <h2 className="text-2xl font-bold mb-4">Product Reviews</h2>
+      <h2 className="text-xl font-bold mb-4">Overall Rating: {rating.toFixed(1)}</h2>
 
       {/* Display reviews */}
       <div className="space-y-4">
@@ -118,7 +144,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
           <div key={review.ReviewId} className="p-4 border border-gray-200 rounded-lg shadow-sm">
             <p className="font-semibold">Rating: {review.Rating}</p>
             <p>Comment: {review.Comment}</p>
-            <p className="text-sm text-gray-600">By User: {review.UserId}</p>
+            <p className="text-sm text-gray-600">By User: {review.User?.FirstName+" " +review.User?.LastName}</p>
             {review.UserId === user?.UserId && (
               <button
                 onClick={() => startEditing(review)}
@@ -158,6 +184,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
         >
           {isEditing ? 'Update Review' : 'Submit Review'}
         </button>
+        <p className='text-red-700'>{eror}</p>
       </div>
     </div>
   );

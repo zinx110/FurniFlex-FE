@@ -120,7 +120,7 @@ const ProductDetailsPage = () => {
                         <p className="text-gray-500 mt-4">
                             No reviews available.
                         </p>
-                        <ReviewSection productId={product.productId}/>
+                        <ReviewSection productId={product.ProductId}/>
                     </div>
                 </div>
             </div>
