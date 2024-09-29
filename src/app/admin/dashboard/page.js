@@ -26,6 +26,9 @@ const Dashboard = () => {
     salesData: [],
   });
 
+  // State for low-stock products
+  const [lowStockProducts, setLowStockProducts] = useState([]);
+
   // Rolling up animation state
   const [animatedUsers, setAnimatedUsers] = useState(0);
   const [animatedProducts, setAnimatedProducts] = useState(0);
@@ -163,44 +166,60 @@ const Dashboard = () => {
     }
   };
 
+  // Fetch low stock products from API
+  const fetchLowStockProducts = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/LowStock`, {
+        headers: {
+          Authorization: `Bearer ${user?.AuthToken}`,
+        },
+      });
+      setLowStockProducts(response.data); 
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching low stock products:', error);
+    }
+  };
+
   useEffect(() => {
     fetchTotalUsers(); 
     fetchUserGrowthData(); 
     fetchTotalCategories(); 
     fetchTotalProducts(); 
     fetchSalesData(); 
+    fetchLowStockProducts(); // Call to fetch low stock products
   }, []);
 
   return (
-    <div className="dashboard-container" style={{ padding: '20px' }}>
-      <h1>Admin Dashboard</h1>
+    <div className="dashboard-container p-6 bg-gray-100">
+      <h1 className="text-4xl font-semibold mb-6">Admin Dashboard</h1>
 
-      <div className="stats-container" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '40px' }}>
-        <div className="stat-box" style={{ flex: 1, textAlign: 'center', marginRight: '20px' }}>
-          <h2>Total Users</h2>
-          <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{animatedUsers}</p>
+      <div className="stats-container grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="stat-box bg-white p-4 rounded shadow text-center">
+          <h2 className="text-lg font-medium">Total Users</h2>
+          <p className="text-2xl font-bold">{animatedUsers}</p>
         </div>
 
-        <div className="stat-box" style={{ flex: 1, textAlign: 'center', marginRight: '20px' }}>
-          <h2>Total Products</h2>
-          <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{animatedProducts}</p>
+        <div className="stat-box bg-white p-4 rounded shadow text-center">
+          <h2 className="text-lg font-medium">Total Products</h2>
+          <p className="text-2xl font-bold">{animatedProducts}</p>
         </div>
 
-        <div className="stat-box" style={{ flex: 1, textAlign: 'center', marginRight: '20px' }}>
-          <h2>Total Categories</h2>
-          <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{animatedCategories}</p>
+        <div className="stat-box bg-white p-4 rounded shadow text-center">
+          <h2 className="text-lg font-medium">Total Categories</h2>
+          <p className="text-2xl font-bold">{animatedCategories}</p>
         </div>
 
-        <div className="stat-box" style={{ flex: 1, textAlign: 'center' }}>
-          <h2>Total Sales</h2>
-          <p style={{ fontSize: '24px', fontWeight: 'bold' }}>${animatedSales}</p>
+        <div className="stat-box bg-white p-4 rounded shadow text-center">
+          <h2 className="text-lg font-medium">Total Sales</h2>
+          <p className="text-2xl font-bold">${animatedSales}</p>
         </div>
       </div>
 
-      <div className="charts-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-        <div className="chart-box" style={{ flex: '1', minWidth: '300px', height: '300px' }}>
-          <h2>Sales This Week</h2>
-          <ResponsiveContainer width="100%" height="100%">
+      <div className="charts-container grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="chart-box bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-medium">Sales This Week</h2>
+          <ResponsiveContainer width="100%" height={300}>
             <LineChart data={dashboardData.salesData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -212,9 +231,9 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="chart-box" style={{ flex: '1', minWidth: '300px', height: '300px' }}>
-          <h2>User Growth</h2>
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="chart-box bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-medium">User Growth</h2>
+          <ResponsiveContainer width="100%" height={300}>
             <BarChart data={dashboardData.userGrowthData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -225,6 +244,22 @@ const Dashboard = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
+      </div>
+
+      <div className="low-stock-container bg-white p-4 rounded shadow mt-6">
+        <h2 className="text-lg font-medium mb-4">Low Stock Products</h2>
+        <ul className="space-y-2">
+          {lowStockProducts.length > 0 ? (
+            lowStockProducts.map((product, index) => (
+              <li key={index} className="flex justify-between items-center">
+                <span className="text-md">{product.Name}</span>
+                <span className="text-md font-bold text-red-600">{product.Quantity}</span>
+              </li>
+            ))
+          ) : (
+            <p className="text-md text-gray-500">No low stock products.</p>
+          )}
+        </ul>
       </div>
     </div>
   );
