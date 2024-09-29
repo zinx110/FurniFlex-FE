@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -8,9 +9,12 @@ const MyOrders = () => {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
+    const router = useRouter();
     useEffect(() => {
-        if (!user) return;
+        if (!user) {
+            router.push("/");
+            return;
+        }
 
         const fetchOrders = async () => {
             try {
@@ -97,14 +101,27 @@ const MyOrders = () => {
                                                 {item.Product.Name} (x
                                                 {item.Quantity})
                                             </span>
-                                            <div className="w-10 h-10 flex justify-center items-center">
-                                                <img
-                                                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/${item.Product.ProductId}/image`}
-                                                    alt={""}
-                                                    width={500}
-                                                    height={500}
-                                                    className="rounded-md object-cover w-full h-full"
-                                                />
+                                            <div className="h-full flex justify-center items-center gap-3 p-1">
+                                                <button
+                                                    className="p-2 bg-blue-600 hover:bg-blue-700 cursor-pointer rounded-md text-white"
+                                                    onClick={() => {
+                                                        router.push(
+                                                            "/store/product/" +
+                                                                item.ProductId
+                                                        );
+                                                    }}
+                                                >
+                                                    View Product
+                                                </button>
+                                                <div className="w-10 h-10 flex justify-center items-center">
+                                                    <img
+                                                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/Products/${item.Product.ProductId}/image`}
+                                                        alt={""}
+                                                        width={500}
+                                                        height={500}
+                                                        className="rounded-md object-cover w-full h-full"
+                                                    />
+                                                </div>
                                             </div>
                                         </li>
                                     ))}
