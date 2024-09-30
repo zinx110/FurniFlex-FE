@@ -46,7 +46,7 @@ const Details = () => {
                     <div className="flex flex-col mt-5 gap-2 text-[18px] text-[#272626] font-extralight">
                         <div className="flex justify-between">
                             <span>Subtotal</span>
-                            <span>€ {subTotal}</span>
+                            <span>$ {subTotal}</span>
                         </div>
                         <div className="flex justify-between">
                             <span>Shipping</span>
@@ -54,12 +54,12 @@ const Details = () => {
                         </div>
                         <div className="flex justify-between">
                             <span>Estimated Tax</span>
-                            <span>-€</span>
+                            <span>-$</span>
                         </div>
                         <hr />
                         <div className="flex justify-between my-5 font-bold text-black">
                             <span>Total</span>
-                            <span>€ {subTotal}</span>
+                            <span>$ {subTotal}</span>
                         </div>
                     </div>
                 </div>

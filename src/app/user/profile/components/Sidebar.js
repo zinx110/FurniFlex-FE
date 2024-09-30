@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -18,16 +19,10 @@ const Sidebar = () => {
             path: "/user/change_password",
             imgUrl: "/assets/icons/setting.svg",
         },
-        {
-            id: 3,
-            name: "My Orders",
-            path: "/user/my-orders",
-            imgUrl: "/assets/icons/orders.svg",
-        },
     ];
 
     const router = useRouter();
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
 
     const handleLogout = () => {
         logout();
@@ -39,7 +34,7 @@ const Sidebar = () => {
             <hr className="border-gray-500 border-t-[0.1px] mt-2" />
             <div className="mt-8 flex flex-col gap-3">
                 {Options.map((option) => (
-                    <a
+                    <Link
                         href={option.path}
                         key={option.id}
                         className="flex font-semibold mb-4"
@@ -61,8 +56,34 @@ const Sidebar = () => {
                                 className="w-[24px] h-[24px]"
                             />
                         </div>
-                    </a>
+                    </Link>
                 ))}
+
+                {user?.Role.Name === "customer" ? (
+                    <Link
+                        href="/user/my-orders"
+                        className="flex font-semibold mb-4"
+                    >
+                        <Image
+                            src="/assets/icons/orders.svg"
+                            alt={"option.name"}
+                            width={1000}
+                            height={1000}
+                            className="w-[24px] h-[24px] mr-2"
+                        />
+                        <div className="flex justify-between w-full">
+                            <span>My Orders</span>
+                            <Image
+                                src="/assets/icons/rightnav.svg" // Keep this as a static image
+                                alt="alt"
+                                width={1000}
+                                height={1000}
+                                className="w-[24px] h-[24px]"
+                            />
+                        </div>
+                    </Link>
+                ) : null}
+
                 <button
                     onClick={handleLogout}
                     className="flex font-semibold mb-4"

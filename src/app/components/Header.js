@@ -13,12 +13,6 @@ const Barlist = [
     },
     {
         id: 2,
-        name: "Products",
-        link: "/",
-    },
-
-    {
-        id: 3,
         name: "About",
         link: "/about",
     },
@@ -68,7 +62,7 @@ const Header = () => {
                         </Link>
                     ))}
 
-                    {user?.Role.name === "customer" ? (
+                    {user?.Role.Name === "customer" ? (
                         <Link
                             href={"/user/my-orders"}
                             className="hover:bg-slate-300/45 p-1 rounded-lg hover:pt-2 flex-1"

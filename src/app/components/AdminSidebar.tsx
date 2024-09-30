@@ -32,9 +32,9 @@ const AdminRouteList = [
         link: "/admin/dashboard",
     },
     {
-        id: 2,
-        name: "Roles",
-        link: "/admin/manage-roles",
+        id: 5,
+        name: "Post Product",
+        link: "/admin/post-product",
     },
     {
         id: 3,
@@ -42,23 +42,23 @@ const AdminRouteList = [
         link: "/admin/view-edit-products",
     },
     {
-        id: 4,
-        name: "Manage Categories",
-        link: "/admin/view-edit-categories",
-    },
-    {
-        id: 5,
-        name: "Post Product",
-        link: "/admin/post-product",
-    },
-    {
         id: 6,
         name: "Post Category",
         link: "/admin/post-category",
     },
     {
+        id: 4,
+        name: "Manage Categories",
+        link: "/admin/view-edit-categories",
+    },
+    {
         id: 7,
         name: "Manage Orders",
         link: "/admin/manage-orders",
+    },
+    {
+        id: 2,
+        name: "Roles",
+        link: "/admin/manage-roles",
     },
 ];

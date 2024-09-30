@@ -131,6 +131,10 @@ export const PostProducts = () => {
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!user) {
+            alert("No user");
+            return;
+        }
 
         // Validate fields before submission
         if (!validateFields()) {
@@ -152,6 +156,7 @@ export const PostProducts = () => {
         }
 
         try {
+            console.log("form data : ", formData);
             const response = await axios.post(
                 "https://localhost:44344/api/Products",
                 formData,
@@ -179,6 +184,7 @@ export const PostProducts = () => {
             }
         } catch (error) {
             setMessage("Error posting product: " + error.message);
+            console.log("error posting: ", error);
         }
     };
 

@@ -30,10 +30,10 @@ const ProductCard = ({ item }) => {
                     </span>
                     <div className="flex gap-3">
                         <span className="text-[#343434] font-bold text-[18px]">
-                            €{item.DiscountedPrice}
+                            ${item.DiscountedPrice}
                         </span>
                         <s className="text-[#ABABAB] font-semibold text-[18px]">
-                            €{item.mainPrice}{" "}
+                            ${item.mainPrice}{" "}
                             {/* Show the calculated main price */}
                         </s>
                         <span className="text-[#B92E2E] font-bold text-[18px]">
@@ -41,7 +41,7 @@ const ProductCard = ({ item }) => {
                         </span>
                     </div>
                     <span className="text-[#838383] text-[14px]">
-                        {item.Description}
+                        {truncateText(item.Description, 50)}
                     </span>
                 </div>
                 <div>
@@ -58,7 +58,7 @@ const ProductCard = ({ item }) => {
                             height={1440}
                         />
                         <span className="text-white font-medium">
-                        Click to Buy
+                            Click to Buy
                         </span>
                     </button>
                 </div>
@@ -68,3 +68,19 @@ const ProductCard = ({ item }) => {
 };
 
 export default ProductCard;
+
+export const truncateText = (description, num) => {
+    try {
+        if (!description) {
+            return "No description available";
+        }
+        if (description.length > num) {
+            return description.substring(0, num) + "...";
+        } else {
+            return description;
+        }
+    } catch (error) {
+        console.error("truncateText Error: ", error);
+        return "No description available.";
+    }
+};

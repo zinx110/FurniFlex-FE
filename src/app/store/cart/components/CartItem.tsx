@@ -144,7 +144,7 @@ const CartItem = ({ cart }: CartItemProps) => {
                 <button className="flex" onClick={removeFromCart}>
                     <img src="/assets/icons/cross.svg" alt="" />
                 </button>
-                <p>€ {(cart.Product?.DiscountedPrice || 0) * cart.Quantity}</p>
+                <p>$ {(cart.Product?.DiscountedPrice || 0) * cart.Quantity}</p>
             </div>
         </div>
     );
