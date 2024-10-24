@@ -1,11 +1,9 @@
-
-
-
 # FurniFlex Frontend
 
 This is the frontend for FurniFlex, an e-commerce platform for browsing, ordering, and managing furniture purchases. The frontend is built using Next.js 14 with React and communicates with the FurniFlex backend through REST API.
 
-## Frontend
+
+## Backend
 The backend of this project is built with **ASP.NET Framework Web API**. You can find the backend repository [(https://github.com/roman0190/FurniflexBE)](https://github.com/roman0190/FurniflexBE).
 
 ## Features
@@ -17,7 +15,7 @@ The backend of this project is built with **ASP.NET Framework Web API**. You can
 
 ## Demo
 
-[![FurniFlex Demo](./FurniFlex_Demo_HomePage.png)](./FurniFlex_Demo.mp4)
+<video src="https://github.com/user-attachments/assets/c4f01e3a-f060-49d1-a06c-5a475cbe3562" width="352" height="720"></video>
 
 
 ## Setup Instructions
